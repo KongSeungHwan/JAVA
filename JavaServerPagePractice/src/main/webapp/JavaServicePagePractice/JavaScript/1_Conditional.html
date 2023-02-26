@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바 스크립트 따라잡기!</title>
+</head>
+<body>
+<script>
+var age = -1;
+var charge = 0;
+if((age>0)&&(age<5)){
+	charge = 0;
+}else if((age>=5)&&(age<13)){
+	charge = 1000;
+}else if(age>=13){
+	charge = 2000;
+}else{
+	document.write("나이가 음수일 수는 없습니다.<br>");
+	charge = 0;
+}
+document.write("요금은 "+charge+"입니다. <br>");
+
+var rank = 3;
+var medalColor;
+
+switch(rank) {
+case 1:
+	medalColor="금메달";
+	break;
+case 2:
+	medalColor="은메달";
+	break;
+case 3:
+	medalColor="동메달";
+	break;
+default:
+	medalColor="없음";
+}
+document.write("메달 색:"+medalColor);
+
+
+</script>
+
+<!-- java에서 했던 코드들 다시 짜기 -->
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ConditionalPrac</title>
+</head>
+<body>
+<script>
+var date = new Date();
+var day = "";
+alert(date);
+
+//오늘 날짜 나타내기!
+
+if((date.getDay()>=0)&&(date.getDay<=3)){
+	document.write("평일입니다.");
+	
+}else if(date.getDay()==4){
+	document.write("불금입니다.");
+}
+else if((date.getDay()>4)&&(date.getDay<=6)){
+	document.write("주말입니다.");
+}else{
+	document.write("잘못된 값입니다.");
+}
+
+if(date.getDay()==0){
+	
+	day = "월요일";
+}else if(date.getDay()==1){
+	day = "화요일";
+}
+else if(date.getDay()==2){
+	day = "수요일";
+}
+else if(date.getDay()==3){
+	day = "목요일";
+}
+else if(date.getDay()==4){
+	day = "금요일";
+}
+else if(date.getDay()==5){
+	day = "토요일";
+}
+else if(date.getDay()==6){
+	day = "일요일";
+}else{
+	
+	
+}
+	
+
+document.write("<pre>"+date.getFullYear()+" 년 ");
+document.write(date.getMonth()+" 월 ");
+document.write(date.getDay()+" 월 ");
+document.write(" "+day+" ");
+document.write(date.getHours()+" 시 ");
+document.write(date.getMinutes()+" 분 ");
+document.write(date.getSeconds()+" 초 </pre> <br>")
+
+</script>
+
+</body>
+</html>
