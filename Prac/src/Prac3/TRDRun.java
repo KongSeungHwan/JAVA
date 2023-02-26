@@ -16,12 +16,13 @@ public class TRDRun extends Thread{
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		for (int j = 0; j < 10; j++) {
 			TRDRun t = new TRDRun(j);
 			t.start();	
 		}
-		System.out.println("main method End!");
+		System.out.println("main method End!");//그냥 일반메소드 
+		//호출보다 훨씬 출력속도가 빠른 것을 알 수 있다.(일부러 딜레이 준것.sleep 메소드)
 		
 
 	}

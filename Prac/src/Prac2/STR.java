@@ -10,7 +10,7 @@ public class STR {
 		System.out.println(run.question3());
 	}
 	private static final String[] STRARR= {"Pie","pi","P","cake"};
-	//두 개의 주사위를 구려서 나온 눈의 합이 6인 경우를 모두 출력
+	//두 개의 주사위를 굴려서 나온 눈의 합이 6인 경우를 모두 출력
 		public List<Integer[]> question4() {
 			return null;
 		}
