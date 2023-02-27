@@ -1,0 +1,55 @@
+예외 처리
+
+프로그램 오류
+프로그램 실행 중 어떤 원인에 의해 프로그램이 해당 상황에 대처하지 못할 경우 비정상적으로 종료되거나
+에러팝업창이 뜨는 현상
+
+compile Error
+
+컴파일 시점에서 발생하는 에러
+
+Runtime Error
+
+프로그램 실행 시점에서 발생하는 에러
+
+Logical Error
+소스 코드 컴파일도 정상적으로 되고 런타임상 에러가 발생하는 것이 아닌 개발자의 의도와는 다르게
+동작하는 에러
+
+예외 발생 시 예외에 대한 정보를 printStackTrace()와 getMessage()를 통해 얻을 수 있다.
+
+printStackTrace()
+예외 발생 당시 호출 스택에 있었던 메소드의 정보와 예외 메세지를 화면에 출력
+
+getMessage()
+예외클래스의 인스턴스에 저장된 메시지를 얻을 수 있다.
+
+ArithmaticException
+산술 연산 예외 상황
+ArrayIndexOutOfBoundsException
+배열 인덱스 범위 초과 예외 발생
+등
+
+
+
+다른 클래스  인터페이스 AutoClosable 상속
+또한 close() 메소드 구현
+
+그리고 try 조건절에 클래스 생성
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

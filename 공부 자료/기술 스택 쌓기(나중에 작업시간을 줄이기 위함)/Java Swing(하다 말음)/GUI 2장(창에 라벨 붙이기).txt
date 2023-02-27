@@ -1,0 +1,30 @@
+보통 라벨은 프레임 안에서 좌표를 찍게 된다.
+라벨은 보통 맨 좌측 가운데부터 시작한다.
+
+setSize(너비,높이)
+setLocation(왼쪽 좌표,위쪽 좌표)
+setBounds(왼쪽좌표,위쪽 좌표,너비, 높이)
+
+setHorizontalAlignment(integer): 라벨 가로 정렬하는 메소드
+JLabel.Left =
+JLabel.Center =
+JLabel.Right =
+
+버튼 만들기
+JButton (객체명) = new JButton(String 값 제목)
+
+JButton 메소드
+setSize(가로,세로 ) 가로,세로 크기
+setLocation(가로,세로) 프레임 좌측 최상단 기준
+
+설정 끝났으면 프레임에 추가!
+
+TextField
+(Atm System에서 id pw 입력 시 필요)
+
+
+Frame에 들어가는 모든 요소들은 함수들이 비슷하다.
+
+
+
+

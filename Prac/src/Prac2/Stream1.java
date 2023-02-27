@@ -49,7 +49,7 @@ public class Stream1 {
 				.stream()
 				.flatMap(s->Arrays.stream(s).sorted()).collect(Collectors.toList());//취미 리스트
 				
-				Map<String,Integer> hobmap = hobbyList.stream().collect(Collectors.toMap(h->h,h->1,(o,n)->o+=n));//취미 별로 몇명인가 조사! 
+				Map<String,Integer> hobmap = hobbyList.stream().collect(Collectors.toMap(h->h,h->1,(o,n)->++o));//취미 별로 몇명인가 조사! 
 				
 				Iterator<Entry<String,Integer>> it = hobmap.entrySet().iterator();
 				while(it.hasNext()){
@@ -58,8 +58,6 @@ public class Stream1 {
 				}
 				
 				List<String> sayList = list.stream().map(s->s.say).collect(Collectors.toList());//하고 싶은 말 리스트
-				//System.out.printf("\"좋아\"말의 횟수!: %d", sayList.stream().mapToInt(s->s.replace("좋아","").length()).sum());
-				//sayList.stream().mapToInt(s->s.replace("좋아","").length())
 
 	}
 
