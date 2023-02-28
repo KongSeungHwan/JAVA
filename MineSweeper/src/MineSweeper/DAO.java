@@ -10,7 +10,7 @@ public class DAO {
 	String dbpw ="3520";
 	Statement state;
 	ResultSet rs;//최대한 중복되는 객체들은 필드로 처리(자바는 초기화 안 할 시 디폴트 값이 null이거나 0이지만, c는 쓰레기 값이 초기화된다.)
-	HashMap<String,DTO> databaseClientList;
+	HashMap<String,Client> databaseClientList;
 	DAO(){databaseClientList=allDataSQL();
 	try {
 		con = DriverManager.getConnection(connect,dbid,dbpw);
@@ -40,12 +40,12 @@ public class DAO {
 		}
 	} //처음 만들 시에는 판수가 0으로 되어야하니까 victory,total 둘 다 0으로 insert문을 구성.
 
-	DTO personalInquirySQL(String id) throws SQLException{
+	Client personalInquirySQL(String id) throws SQLException{
 		try {
 			String sql="select * from minesweeper.client where client_id='"+id+"';";
 			state=con.createStatement();
 			rs = state.executeQuery(sql);
-			if(rs.next())return new DTO(rs.getString("client_name"),rs.getString("client_id"),rs.getString("client_pw"),rs.getInt("total_rounds"),rs.getInt("victory_rounds"),rs.getDouble("victory_rate"));
+			if(rs.next())return new Client(rs.getString("client_name"),rs.getString("client_id"),rs.getString("client_pw"),rs.getInt("total_rounds"),rs.getInt("victory_rounds"),rs.getDouble("victory_rate"));
 			else{
 				System.out.println("해당 계정이 존재하지 않습니다.");
 				return null;
@@ -56,14 +56,14 @@ public class DAO {
 			return null;
 		}
 	}
-	HashMap<String,DTO> allDataSQL(){
-		HashMap<String,DTO> resultList = new HashMap<>();
+	HashMap<String,Client> allDataSQL(){
+		HashMap<String,Client> resultList = new HashMap<>();
 		try {
 			con = DriverManager.getConnection(connect,dbid,dbpw);
 			String sql="select * from minesweeper.client;";
 			state = con.createStatement();
 			rs = state.executeQuery(sql);
-			while (rs.next())resultList.put(rs.getString("client_id"),new DTO(rs.getString("client_name"),rs.getString("client_id"),rs.getString("client_pw"),rs.getInt("total_rounds"),rs.getInt("victory_rounds"),rs.getDouble("victory_rate")));
+			while (rs.next())resultList.put(rs.getString("client_id"),new Client(rs.getString("client_name"),rs.getString("client_id"),rs.getString("client_pw"),rs.getInt("total_rounds"),rs.getInt("victory_rounds"),rs.getDouble("victory_rate")));
 			return resultList;
 		} catch (SQLException e) {
 			System.out.println("SQL문법 오류");

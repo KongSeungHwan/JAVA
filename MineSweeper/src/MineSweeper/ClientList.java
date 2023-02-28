@@ -1,14 +1,13 @@
 package MineSweeper;
 import java.util.HashMap;
 public class ClientList{
-	HashMap<String,DTO> list;
+	HashMap<String,Client> list;
 	DAO dao;
 	ClientList(){
 		dao=new DAO(); //생성자가 호출되는 순간만 생성되도록 설정 그이외에는 선언만 한 형태(공간 복잡도 생각)
 		list= dao.databaseClientList;
 	}
-	boolean addClient(String name,String id,String pw) {
-
+	boolean addClientByDB(String name,String id,String pw) {
 		if(dao.insertSQL(name,id, pw)==true) {
 			System.out.println("회원가입 완료!");
 			return true;
