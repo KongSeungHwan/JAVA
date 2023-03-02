@@ -11,9 +11,10 @@ public class DAO {
 	Statement state;
 	ResultSet rs;//최대한 중복되는 객체들은 필드로 처리(자바는 초기화 안 할 시 디폴트 값이 null이거나 0이지만, c는 쓰레기 값이 초기화된다.)
 	HashMap<String,Client> databaseClientList;
-	DAO(){databaseClientList=allDataSQL();
+	DAO(){
 	try {
 		con = DriverManager.getConnection(connect,dbid,dbpw);
+		databaseClientList=accessAllDataSQL();
 	} catch (SQLException e) {
 		System.out.println("DB연결 실패");
 	}
@@ -39,27 +40,9 @@ public class DAO {
 			return false;
 		}
 	} //처음 만들 시에는 판수가 0으로 되어야하니까 victory,total 둘 다 0으로 insert문을 구성.
-
-	Client personalInquirySQL(String id) throws SQLException{
-		try {
-			String sql="select * from minesweeper.client where client_id='"+id+"';";
-			state=con.createStatement();
-			rs = state.executeQuery(sql);
-			if(rs.next())return new Client(rs.getString("client_name"),rs.getString("client_id"),rs.getString("client_pw"),rs.getInt("total_rounds"),rs.getInt("victory_rounds"),rs.getDouble("victory_rate"));
-			else{
-				System.out.println("해당 계정이 존재하지 않습니다.");
-				return null;
-			}//key값은 단일 개수로만 존재하니까 if문 단한번만 돌려도 무방(굳이 무한루프 돌릴 필요 x)
-		}
-		catch(SQLException e){
-			System.out.println("SQL문법 오류");
-			return null;
-		}
-	}
-	HashMap<String,Client> allDataSQL(){
+	synchronized HashMap<String,Client> accessAllDataSQL(){
 		HashMap<String,Client> resultList = new HashMap<>();
 		try {
-			con = DriverManager.getConnection(connect,dbid,dbpw);
 			String sql="select * from minesweeper.client;";
 			state = con.createStatement();
 			rs = state.executeQuery(sql);
@@ -70,28 +53,24 @@ public class DAO {
 			return null;
 		}
 	}
-	boolean checkLoginId(String id){
+	synchronized void updateGameDataSQL(boolean vic,Client cl){
 		try {
-			state = con.createStatement();
-			String sql="select * from minesweeper.client where client_id='"+id+"';";
-			rs = state.executeQuery(sql);
-			return rs.next(); //있는지 없는지만 체크! next 함수가 리턴 값이 boolean임(if문이나 삼항으로 나누면 코드만 길어지고 가독성 떨어짐)
+			String sql1 ="update client set total_rounds = total_rounds+1";
+			String sql2 =", victory_rounds = victory_rounds+1";
+			String sql3 =" where client_id = '"+cl.getId()+"'";
+			state=con.createStatement();
+			if(vic==true) {
+				state.execute(sql1+sql2+sql3); //이길 경우
+			}else{
+				state.execute(sql1+sql3);//질 경우
+			}
 		} catch (SQLException e) {
 			System.out.println("SQL문법 오류");
-			return false;
+			e.printStackTrace();
 		}
+		
 	}
-	boolean checkPassword(String password){
-		try {
-			state = con.createStatement();
-			String sql="select * from minesweeper.client where client_password='"+password+"';";
-			rs = state.executeQuery(sql);
-			return rs.next();
-		} catch (SQLException e){
-			System.out.println("SQL문법 오류");
-			return false;
-		}
-	}//각자 메소드의 리턴 값이 다르기에 예외처리도 다 제각각 함.
+	//각자 메소드의 리턴 값이 다르기에 예외처리도 다 제각각 함.
 	//Connector 객체는 필드로 놓고
 	//PreparedStatement를 안쓰고 Statement 객체를 쓰는 이유 
 	//전자 객체는 보안 공격에 취약하다. 그 반면 Statement 객체는 안전하다.
