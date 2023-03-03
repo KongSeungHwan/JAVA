@@ -6,27 +6,27 @@ import java.io.InputStreamReader;
 
 //해당 클래스는 외부(DB)에서 가져온 정보와 회원 정보를 대조하여 데이터를 처리하는 클래스
 public class ClientManagement{
-	ClientList cList;
+	TransferData cList;
 	BufferedReader n;
 
 	ClientManagement(){
 		n = new BufferedReader(new InputStreamReader(System.in));
-		cList = new ClientList();
+		cList = new TransferData();
 	}
 	Client checkInfo() throws IOException{
 		System.out.println("아이디 입력!");
 		String id = n.readLine();
 		System.out.println("비밀번호 입력!");
 		String pw = n.readLine();
-		if(cList.list.isEmpty()) {
+		if(cList.dbList.isEmpty()) {
 			System.out.println("존재하지 않는 계정입니다.");
 			return null;
 		}
 		else{
-			if(cList.list.get(id)!=null){
-				if(cList.list.get(id).getPw().equals(pw)) {
+			if(cList.dbList.get(id)!=null){
+				if(cList.dbList.get(id).getPw().equals(pw)) {
 					System.out.println("로그인 성공!");
-					return cList.list.get(id);
+					return cList.dbList.get(id);
 				}else {
 					System.out.println("비밀번호가 틀립니다.");
 					return null;
@@ -41,7 +41,7 @@ public class ClientManagement{
 		String id = n.readLine();
 		System.out.println("비밀번호 입력! 영문자+숫자+특수문자 조합으로만 입력해주십시오!");
 		String pw = n.readLine();
-		if(cList.list.get(id)!=null) return false; //중복 제거
+		if(cList.dbList.get(id)!=null) return false; //중복 제거
 		if(checkIdCondition(id)!=true) {
 			System.out.println("아이디 조건을 다시 확인하고 시도해주십시오!");
 			return false;
@@ -72,11 +72,12 @@ public class ClientManagement{
 		//최소 8글자 이상 최대 24글자 숫자 영문자 조합이어야하는 알고리즘+(공백 제거) 시간 복잡도 O(n) 
 	}
 	void showClientInfo(String id){ //회원 id를 파라미터로 정보를 조회하는 메소드
-		System.out.printf("%s님의 정보! \n",cList.list.get(id).getName());
-		System.out.printf("id: %s \n",cList.list.get(id).getId());
-		System.out.printf("pw: %s \n",cList.list.get(id).getPw());
-		System.out.printf("승률: %d \n",(int)(cList.list.get(id).getvRounds()));
-		System.out.printf("총 판수: %d \n",(int)(cList.list.get(id).gettRounds()));
-		System.out.printf("승률: %.2f \n",cList.list.get(id).getvRate());//소수점 아래 2번째까지 반올림 처리
+		System.out.printf("%s님의 정보! \n",cList.dbList.get(id).getName());
+		System.out.printf("id: %s \n",cList.dbList.get(id).getId());
+		System.out.printf("승리 판수: %d 판 \n",(int)(cList.dbList.get(id).getvRounds()));
+		System.out.printf("총 판수: %d 판 \n",(int)(cList.dbList.get(id).gettRounds()));
+		//강제 캐스팅 int >> double %.0f서식자로도 충분히 가능하나 int >> double도 소수점 아래 버림처리 된다는 것도 보이려고 일부러 쓴 것.
+		
+		System.out.printf("승률: %.2f %c\n",cList.dbList.get(id).getvRate()*100,37);//소수점 아래 2번째까지 반올림 처리
 	}//숫자 야구게임 (볼 카운트 수) = (총 일치수)-(스트라이크 카운트 수) 응용
 }

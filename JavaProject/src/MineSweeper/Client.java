@@ -15,24 +15,24 @@ public class Client{
 		this.pw=pw;
 		this.vRounds = 0;
 		this.tRounds = 0;
-		vRate=(tRounds>0)?vRounds/tRounds:0;
+		vRate=(tRounds>0)? (((vRounds/tRounds)>100)? 100:(vRounds/tRounds)) :0;
 		grade = "UnrankedPlayer";
 	}//가입시 필요한 생성자
-	Client(String name,String id,String pw,int vRounds,int tRounds,double vRate){
+	Client(String name,String id,String pw,double tRounds,double vRounds){
 		//DB에서는 받아올시 INT로 받지만 DOUBLE로 형변환 자동으로 되게끔 설계
 		//설계의도 int끼리는 이항연산자 /를 쓰면 정확하게 소수점 밑자리까지 나오지 않지만 double로 연산을 하면 소수점 밑까지 출력 가능!
 		this.name =name;
 		this.id=id;
 		this.pw=pw;
-		this.vRounds = vRounds;
-		this.tRounds = tRounds; //int >>double은 가능(캐스팅x)
-		this.vRate=vRate;
+		this.tRounds = tRounds;
+		this.vRounds = vRounds; //int >>double은 가능(캐스팅x)
+		this.vRate=(tRounds>0)?(((vRounds/tRounds)>1)? 1:(vRounds/tRounds)):0;
 		if((tRounds>=0)&&(tRounds<=20)){
 			grade = "UnrankedPlayer";
 		}else if(tRounds>20) {
-			if((vRate>=0)&&(vRate<=50)) grade ="BeginnerPlayer";
-			else if((vRate>50)&&(vRate<=75)) grade ="AdvancedPlayer";
-			else if((vRate>75)&&(vRate<=100)) grade ="MasterPlayer";
+			if((vRate*100>=0)&&(vRate*100<=50)) grade ="BeginnerPlayer";
+			else if((vRate*100>50)&&(vRate*100<=75)) grade ="AdvancedPlayer";
+			else if((vRate*100>75)&&(vRate*100<=100)) grade ="MasterPlayer";
 			else grade = "Unnormal Player";
 		}else {
 			grade = "Unnormal Player";

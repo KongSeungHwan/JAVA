@@ -16,7 +16,6 @@ public class DAO {
 		con = DriverManager.getConnection(connect,dbid,dbpw);
 		databaseClientList=accessAllDataSQL();
 	} catch (SQLException e) {
-		System.out.println("DB연결 실패");
 	}
 	} //생성시 바로 데베에있는 모든 데이터 hashmap으로 초기화
 	final void closeResource(){//템플릿 메소드(공부한 것 응용)
@@ -30,8 +29,8 @@ public class DAO {
 	boolean insertSQL(String name,String id, String pw){
 		try {
 			state=con.createStatement();
-			String sql = "insert into minesweeper.client(client_name,client_id,client_pw,total_rounds,victory_rounds,victory_rate)"
-					+ "values('"+name+"','"+id+"','"+pw+"',"+0+","+0+","+0+");";
+			String sql = "insert into minesweeper.client(client_name,client_id,client_pw,total_rounds,victory_rounds)"
+					+ "values('"+name+"','"+id+"','"+pw+"',"+0+","+0+");";
 			//entity 추가 insert문 활용
 			state.execute(sql);
 			return true;
@@ -46,7 +45,13 @@ public class DAO {
 			String sql="select * from minesweeper.client;";
 			state = con.createStatement();
 			rs = state.executeQuery(sql);
-			while (rs.next())resultList.put(rs.getString("client_id"),new Client(rs.getString("client_name"),rs.getString("client_id"),rs.getString("client_pw"),rs.getInt("total_rounds"),rs.getInt("victory_rounds"),rs.getDouble("victory_rate")));
+			while (rs.next())resultList.put(rs.getString("client_id")
+					,new Client(rs.getString("client_name")
+					,rs.getString("client_id")
+					,rs.getString("client_pw")
+					,rs.getInt("total_rounds")
+					,rs.getInt("victory_rounds")
+					));
 			return resultList;
 		} catch (SQLException e) {
 			System.out.println("SQL문법 오류");
