@@ -3,6 +3,8 @@ package MineSweeper;
 import java.sql.*;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 public class DAO {
 	Connection con;
 	String connect="jdbc:mysql://localhost:3307/minesweeper?serverTimezone=UTC";
@@ -35,11 +37,11 @@ public class DAO {
 			state.execute(sql);
 			return true;
 		}catch(SQLException e){
-			System.out.println("SQL문법 오류");
+			JOptionPane.showMessageDialog(null, "SQL문법 오류");
 			return false;
 		}
 	} //처음 만들 시에는 판수가 0으로 되어야하니까 victory,total 둘 다 0으로 insert문을 구성.
-	 HashMap<String,Client> accessAllDataSQL(){
+	synchronized HashMap<String,Client> accessAllDataSQL(){
 		HashMap<String,Client> resultList = new HashMap<>();
 		try {
 			String sql="select * from minesweeper.client;";
@@ -54,11 +56,11 @@ public class DAO {
 					));
 			return resultList;
 		} catch (SQLException e) {
-			System.out.println("SQL문법 오류");
+			JOptionPane.showMessageDialog(null, "SQL문법 오류");
 			return null;
 		}
 	}
-	 void updateGameDataSQL(boolean vic,Client cl){
+	synchronized void updateGameDataSQL(boolean vic,Client cl){
 		try {
 			String sql1 ="update client set total_rounds = total_rounds+1";
 			String sql2 =", victory_rounds = victory_rounds+1";
@@ -70,11 +72,23 @@ public class DAO {
 				state.execute(sql1+sql3);//질 경우
 			}
 		} catch (SQLException e) {
-			System.out.println("SQL문법 오류");
+			JOptionPane.showMessageDialog(null, "SQL문법 오류");
 			e.printStackTrace();
 		}
 		
 	}
+	boolean deleteSQL(String id){
+		try {
+			state= con.createStatement();
+			String sql ="delete from client where (client_id ='"+id+"')";
+			state.execute(sql);
+			return true;
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "SQL문법 오류");
+			return false;
+		}
+	}
+	
 	//각자 메소드의 리턴 값이 다르기에 예외처리도 다 제각각 함.
 	//Connector 객체는 필드로 놓고
 	//PreparedStatement를 안쓰고 Statement 객체를 쓰는 이유 
