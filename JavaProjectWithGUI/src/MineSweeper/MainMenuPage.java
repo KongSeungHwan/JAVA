@@ -9,12 +9,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class MainMenuPage{
 	JFrame frm;
-	ClientManagement clim;
 	MainMenuPage(){
-		clim = new ClientManagement();
 		frm = new JFrame("★★★지뢰 찾기★★★");
 		ImageIcon img = new ImageIcon("src/image/mine.png");
 		ImageIcon backGround = new ImageIcon("src/image/backGroundImage.jpg");
@@ -50,8 +49,10 @@ public class MainMenuPage{
 		exitButton.setBounds(500, 610, 100, 50);
 		exitButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				if(JOptionPane.showConfirmDialog(exitButton, "종료하시겠습니까?","확인 창",JOptionPane.YES_NO_CANCEL_OPTION)==0){
 				frm.setVisible(false);
 				System.exit(0);
+				}
 			}
 		});
 		frm.add(loginPage);

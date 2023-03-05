@@ -20,19 +20,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class MineSweeperPage{
-	JFrame frm;
-	Client session;
-	List<List<Integer>> mineMatrix;
-	List<List<String>> currentMatrix; 
-	List<List<Integer>> selectMatrix;
-	List<List<JButton>> JButtonMatrix;
-	int normalNumber = 0;
-	int mineNumber = 0;
+	JFrame frm; //default 같은 패키지 내
+	private Client session;
+	private List<List<Integer>> mineMatrix;
+	private List<List<String>> currentMatrix; 
+	private List<List<Integer>> selectMatrix;
+	private List<List<JButton>> JButtonMatrix;
+	private int normalNumber = 0;
+	private int mineNumber = 0;
 	MineSweeperPage(Client client){
 		session= client;
 		int num=0;
-		if(session.getGrade().equals("UnrankedPlayer")) num=4;
-		else if(session.getGrade().equals("BeginnerPlayer")) num=5;
+		if(session.getGrade().equals("UnrankedPlayer")) num=3;
+		else if(session.getGrade().equals("BeginnerPlayer")) num=4;
 		else if(session.getGrade().equals("AdvancedPlayer")) num=5;
 		else if(session.getGrade().equals("MasterPlayer")) num=6;
 		else {num =-1;}
@@ -80,9 +80,8 @@ public class MineSweeperPage{
 		});
 		frm.add(back);
 	}
-	void addButton() {
+	void addButton(){
 		int col=0 ,row = 0;
-
 		for(int i=0;i<JButtonMatrix.size();i++) {
 			row = 0;
 			col+=70;
@@ -172,12 +171,12 @@ public class MineSweeperPage{
 			}else if(mineMatrix.get(y).get(x)==2){
 				return false;
 			}else {
-				System.out.println("프로그램 문제 발생! 자료구조에 유효하지 않은 값이 저장되었습니다.");
+				JOptionPane.showMessageDialog(null,"프로그램 문제 발생! 자료구조에 유효하지 않은 값이 저장되었습니다.");
 				return false;
 			}
 		}
 		else {
-			System.out.println("프로그램 문제 발생! 자료구조에 유효하지 않은 값이 저장되었습니다.");
+			JOptionPane.showMessageDialog(null,"프로그램 문제 발생! 자료구조에 유효하지 않은 값이 저장되었습니다.");
 			return false;
 		}
 	}//좌표 값 선택 시 지정 여부를 selectMatrix에 저장하는 형태의 메소드
@@ -194,7 +193,6 @@ public class MineSweeperPage{
 	} 
 	//반드시 짝수여야하는 조건..(최소 1개라도 나올 수 있게 하려면)
 	//1이 일반땅, 2가 폭탄 땅을 의미한다.(70% 확률로 일반땅, 30%확률로 폭탄땅이 나온다.)
-	// 50% 확률로 최소 1,2 2,1 로 시작하게 설정 concat 활용
 	List<List<Integer>> createSelectMatrix(int num){
 		return IntStream.rangeClosed(1, num)
 				.boxed()

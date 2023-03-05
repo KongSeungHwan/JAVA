@@ -12,24 +12,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class GameResultPage {
 	JFrame frm;
-	Client session;
-	List<List<Integer>> list;
-	List<List<JButton>> Buttonlist;
-	Thread dbThread = new Thread(){
-		@Override
-		public void run() {
-			while(true) {
-				try {Thread.sleep(10000); //1000분의 1초니까 10초단위로 DB데이터 갱신
-					session = new ClientManagement().cList.dao.accessAllDataSQL().get(session.getId());}catch (InterruptedException e) {}
-			}
-		}
-	};
-	GameResultPage(Client client,List<List<Integer>> list,boolean vic){
+	private Client session;
+	private List<List<Integer>> list;
+	private List<List<JButton>> Buttonlist;
+	private ClientManagement clim;
+	GameResultPage(Client client,List<List<Integer>> matrix,boolean vic){
 		session=client;
-		this.list = list;
+		clim= new ClientManagement();
+		list = matrix;
 		ResultList();
 		frm = new JFrame("★★★Result★★★");
 		ImageIcon img = new ImageIcon("src/image/mine.png");
@@ -43,25 +37,28 @@ public class GameResultPage {
 		jl.setBounds(200,30,400,50);
 		jl.setForeground(Color.BLUE);
 		frm.add(jl);
-		JLabel jl2 =new JLabel(String.format("%s님 %s !!", session.getName(), vic ? "승리":"패배"));
+		JLabel jl2 =new JLabel(String.format("%s님 %s !!",clim.cList.dbList.get(session.getId()).getName(), vic ? "승리":"패배"));
 		jl2.setFont(new Font("Serif", Font.BOLD,30));
 		jl2.setBounds(200,100,400,50);
-		jl2.setForeground(Color.BLUE);
-		frm.add(jl2);
-		JLabel jl3 =new JLabel(String.format("승률: %s",session.getGrade()));
-		jl2.setFont(new Font("Serif", Font.BOLD,30));
-		jl2.setBounds(200,170,400,50);
 		jl2.setForeground(Color.BLACK);
+		frm.add(jl2);
+		JLabel jl3 =new JLabel(String.format("승률: %.2f %s",clim.cList.dbList.get(session.getId()).getvRate()*100,(char)37));
+		jl3.setFont(new Font("Serif", Font.BOLD,30));
+		jl3.setBounds(200,170,400,50);
+		jl3.setForeground(Color.BLACK);
 		frm.add(jl3);
+		JLabel jl4 =new JLabel(String.format("등급: %s",clim.cList.dbList.get(session.getId()).getGrade()));
+		jl4.setFont(new Font("Serif", Font.BOLD,30));
+		jl4.setBounds(200,200,400,50);
+		jl4.setForeground(Color.BLACK);
+		frm.add(jl4);
 		addButton();
 		JButton back = new RoundedButton("돌아가기");
-		back.setBounds(0, 600, 150, 70);
+		back.setBounds(0, 600, 100, 70);
 		back.addActionListener(new ActionListener(){
-			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e){
 				frm.setVisible(false);
-				dbThread.stop();
 				new ClientPage(session).frm.setVisible(true);
 			}
 		});
@@ -91,17 +88,36 @@ public class GameResultPage {
 				}).collect(Collectors.toList())).collect(Collectors.toList());
 	}
 	void addButton() {
-		int col=0 ,row = 0;
-		for(int i=0;i<Buttonlist.size();i++) {
-			row = 0;
-			col+=70;
-			for(int j=0;j<Buttonlist.size();j++) {
-				JButton bu = Buttonlist.get(i).get(j);
-				bu.setBounds(200+row, 300+col, 60, 60);
-				frm.getContentPane().add(bu);
-				row+=70;
-			}
+		int col=0 ,row = 0, startCol=0,startRow=0;
+		if(Buttonlist.size()==3) {
+			startCol=250;startRow=350;
+		}else if(Buttonlist.size()==4){
+			startCol=200;startRow=300;
+		}else if(Buttonlist.size()==5) {
+			startCol=170;startRow=250;
+		}else if(Buttonlist.size()==6) {
+			startCol=120;startRow=180;
+		}else{
+			JOptionPane.showMessageDialog(null, "잘못된 접근입니다.운영자에게 문의하십시오");
+			frm.setVisible(false);
+			new ClientPage(session).frm.setVisible(true);
 		}
+		try {
+			for(int i=0;i<Buttonlist.size();i++) {
+				row = 0;
+				col+=70;
+				for(int j=0;j<Buttonlist.size();j++) {
+					JButton bu = Buttonlist.get(i).get(j);
+					bu.setBounds(startCol+row, startRow+col, 60, 60);
+					frm.getContentPane().add(bu);
+					row+=70;
+				}
+			}
+	}catch(IndexOutOfBoundsException e){
+		System.out.println("잘못된 접근입니다 운영자에게 문의하십시오.");
+		frm.setVisible(false);
+		new ClientPage(session).frm.setVisible(true);
+	}
 	}
 	
 }

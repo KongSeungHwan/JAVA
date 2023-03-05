@@ -15,13 +15,13 @@ import javax.swing.JTextField;
 
 public class LoginPage{
 	JFrame frm;
-	ClientManagement clim;
-	Client session;
-	Thread dbThread = new Thread(){
+	private ClientManagement clim;
+	private Client session;
+	private Thread dbThread = new Thread(){
 		@Override
 		public void run() {
 			while(true) {
-				try {Thread.sleep(10000); //1000분의 1초니까 10초단위로 DB데이터 갱신
+				try {Thread.sleep(5000); //1000분의 1초니까 10초단위로 DB데이터 갱신
 					clim = new ClientManagement();}catch (InterruptedException e) {}
 			}
 		}
@@ -75,7 +75,6 @@ public class LoginPage{
 		            try {
 						if((session=clim.checkInfo(id.getText(),pw.getText()))==null) {
 							JOptionPane.showMessageDialog(null, "로그인 실패 다시시도해주십시오.");
-							dbThread.stop();
 							new LoginPage().frm.setVisible(true);
 						}
 						else new ClientPage(session).frm.setVisible(true);

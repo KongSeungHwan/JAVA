@@ -15,26 +15,26 @@ public class RoundedButton extends JButton{
 	 * 
 	 */
 	private static final long serialVersionUID = 2072677887113860665L;
-	public RoundedButton() {
+	RoundedButton() {
         super();
         decorate();
     }
 
-    public RoundedButton(String text) {
+    RoundedButton(String text) {
         super(text);
         decorate();
     }
 
-    public RoundedButton(Icon icon) {
+    RoundedButton(Icon icon) {
         super(icon);
         decorate();
     }
-    public RoundedButton(ImageIcon icon) {
+    RoundedButton(ImageIcon icon) {
         super(icon);
         decorate();
     }
 
-    public RoundedButton(String text, Icon icon) {
+    RoundedButton(String text, Icon icon) {
         super(text, icon);
         decorate();
     }

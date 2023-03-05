@@ -6,12 +6,12 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 public class DAO {
-	Connection con;
-	String connect="jdbc:mysql://localhost:3307/minesweeper?serverTimezone=UTC";
-	String dbid ="root";
-	String dbpw ="3520";
-	Statement state;
-	ResultSet rs;//최대한 중복되는 객체들은 필드로 처리(자바는 초기화 안 할 시 디폴트 값이 null이거나 0이지만, c는 쓰레기 값이 초기화된다.)
+	private Connection con;
+	private String connect="jdbc:mysql://localhost:3307/minesweeper?serverTimezone=UTC";
+	private String dbid ="root";
+	private String dbpw ="3520";
+	private Statement state;
+	private ResultSet rs;//최대한 중복되는 객체들은 필드로 처리(자바는 초기화 안 할 시 디폴트 값이 null이거나 0이지만, c는 쓰레기 값이 초기화된다.)
 	HashMap<String,Client> databaseClientList;
 	DAO(){
 	try {
@@ -81,6 +81,18 @@ public class DAO {
 		try {
 			state= con.createStatement();
 			String sql ="delete from client where (client_id ='"+id+"')";
+			state.execute(sql);
+			return true;
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "SQL문법 오류");
+			return false;
+		}
+	}
+	boolean updateSQL(Client cl, String col,String val){
+		try {
+			state= con.createStatement();
+			String sql ="update client set "+col+" = '"+val+
+					"' where client_id = '"+cl.getId()+"'";
 			state.execute(sql);
 			return true;
 		} catch (SQLException e) {

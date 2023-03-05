@@ -9,11 +9,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class ClientPage {
 	JFrame frm;
-	Client session;
-	ClientPage(Client client){
+	private Client session;
+	 ClientPage(Client client){
 		session =client;
 		frm = new JFrame("★★★★");
 		ImageIcon img = new ImageIcon("src/image/mine.png");
@@ -48,8 +49,10 @@ public class ClientPage {
 		logout.setBounds(500, 250, 100, 50);
 		logout.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				if(JOptionPane.showConfirmDialog(logout, "로그아웃하시겠습니까?","확인 창",JOptionPane.YES_NO_CANCEL_OPTION)==0){
 				frm.setVisible(false);
 				new LoginPage().frm.setVisible(true);
+				}
 			}
 		});
 		JButton exitButton = new RoundedButton("종료");

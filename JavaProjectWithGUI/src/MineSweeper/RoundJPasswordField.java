@@ -12,11 +12,11 @@ public class RoundJPasswordField  extends JPasswordField{
 	 */
 	private static final long serialVersionUID = -4665196303763720939L;
 	private Shape shape;
-    public RoundJPasswordField(int size) {
+    RoundJPasswordField(int size) {
         super(size);
         setOpaque(false); // As suggested by @AVD in comment.
     }
-    public RoundJPasswordField(String text,int size) {
+    RoundJPasswordField(String text,int size) {
         super(text,size);
         setOpaque(false); // As suggested by @AVD in comment.
     }
