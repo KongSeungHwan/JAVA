@@ -10,7 +10,7 @@ HyperTextMarkupLanguage
 웹페이지 문서를 구성하는 언어
 JSP?
 Java Server Page
-스크립트 타입이 자바로 이루어진 서버 페이지
+ HTML 코드에 Java 코드를 넣어 동적인 웹 페이지를 생성하는 웹 어플리케이션 도구
 HTML와 JSP 차이점?
 둘의 가장 큰 차이점은 정적인 페이지를 구성시에 html로 구성하고 동적인 페이지를 구성시에 jsp로 구성을 한다.
 
@@ -75,9 +75,15 @@ UTF-8?
 UTF-8은  ISO 10646에서 정의한 표준 문자셋이다.
 EUC-KR?
 EUC-KR은 영어를 제외한 문자셋으로 알면 된다.
-URL?
+URL(Uniform Resource Locator)?
 URL은 네트워크 상에 위치한 주소를 의미한다.
 네트워크 상식
+
++)
+URI(Uniform Resource Identifier) 자원 자체를 식별한 주소
+
+URN(Uniform Resource Name) 자원에 이름을 부여하는 것
+
 
 OSI 7계층 구성?
 물리계층 >> 데이터링크 계층 >>네트워크 계층 >>전송계층 >>세션계층 >>응용계층 >> 표현 계층
@@ -114,7 +120,7 @@ Transaction? 트랜잭션은 DB용어로 작업을 쪼갤 수 없는 단위로 �
 
 Process? 프로세스는 프로그램을 다루는 주체로 즉 , 작업을 하는 주체로 보면 된다.
 
-Thread? 쓰레드도 프로세스의 일종으로 프로세스를 관리하는 주체라고 보면 된다. 
+Thread? 쓰레드는 프로세스에 속하며 작업의 흐름으로 보면 된다. 또 다른 표현으로는 작업의 주체이다.
 
 기본 태그들(의미정도는 암기해두자! 찾아보는 시간 줄이기 단련) 복습
 <%@ page language="java" contentType="text/html; charset=UTF-8"
