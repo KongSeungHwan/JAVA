@@ -116,8 +116,10 @@ public class InquiryPage {
 		exitButton.setBounds(500, 610, 100, 50);
 		exitButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				if(JOptionPane.showConfirmDialog(exitButton, "종료하시겠습니까?","확인 창",JOptionPane.YES_NO_CANCEL_OPTION)==0){
 				frm.setVisible(false);
 				System.exit(0);
+				}
 			}
 		});
 		frm.add(back);

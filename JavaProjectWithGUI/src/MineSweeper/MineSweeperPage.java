@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -23,9 +22,9 @@ public class MineSweeperPage{
 	JFrame frm; //default 같은 패키지 내
 	private Client session;
 	private List<List<Integer>> mineMatrix;
-	private List<List<String>> currentMatrix; 
+	private List<List<String>> currentMatrix;
 	private List<List<Integer>> selectMatrix;
-	private List<List<JButton>> JButtonMatrix;
+	private List<List<JButton>> JButtonMatrix;//해당 리스트들은 collect(Collectors.toList()를 호출 하게 된다면 기본적으로 ArrayList가 리턴된다.)
 	private int normalNumber = 0;
 	private int mineNumber = 0;
 	MineSweeperPage(Client client){
@@ -41,6 +40,7 @@ public class MineSweeperPage{
 			currentMatrix=createDefaultMatrix(num);
 			JButtonMatrix=createJButtonMatrix();
 			mineCount();
+			matrixView(mineMatrix);
 		}catch(IndexOutOfBoundsException e){
 			System.out.println("정상적인 등급이 아닙니다 운영자에게 문의하십시오.");
 			frm.setVisible(false);
@@ -124,7 +124,6 @@ public class MineSweeperPage{
 							but.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e){
-									if((e.getModifiers() & InputEvent.BUTTON3_DOWN_MASK) == 0) {
 									if(!selectSerface(p,s)) {
 										JOptionPane.showMessageDialog(null, "Defeat!");
 										new DAO().updateGameDataSQL(false,session);
@@ -146,8 +145,6 @@ public class MineSweeperPage{
 											frm.setVisible(false);
 											new GameResultPage(session,mineMatrix,true).frm.setVisible(true);
 										}
-									}
-									}else {
 									}
 								}
 							});
@@ -190,8 +187,7 @@ public class MineSweeperPage{
 						).boxed().collect(Collectors.toList())).collect(Collectors.toList());
 				list.stream().forEach(Collections::shuffle);
 				return list;
-	} 
-	//반드시 짝수여야하는 조건..(최소 1개라도 나올 수 있게 하려면)
+	}
 	//1이 일반땅, 2가 폭탄 땅을 의미한다.(70% 확률로 일반땅, 30%확률로 폭탄땅이 나온다.)
 	List<List<Integer>> createSelectMatrix(int num){
 		return IntStream.rangeClosed(1, num)
