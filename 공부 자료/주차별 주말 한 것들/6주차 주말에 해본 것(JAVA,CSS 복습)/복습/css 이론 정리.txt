@@ -1,5 +1,4 @@
 CSS(Cascading Style Sheets)
-
 InLine Sheet
 각 태그에 직접 style 속성을 지정하여 적용하는 방법
 Internal Sheet

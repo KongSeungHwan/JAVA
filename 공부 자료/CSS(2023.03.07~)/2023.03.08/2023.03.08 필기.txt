@@ -17,6 +17,7 @@ Internal Style
 External Style
 
 <link>태그 활용
+
 ex)
 <link href="css/out.css" rel="stylesheet" type="text/css">
 
