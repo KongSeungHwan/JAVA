@@ -1,0 +1,152 @@
+CSS(Cascading Style Sheets)
+
+Position
+(요소의 좌표 설정?)
+
+static position
+기존의 흐름에 맞춰 좌표 지정(디폴트 속성 기본위치)
+
+relative position
+부모 요소의 좌표 기점으로 좌표 설정(단 밑의 내용처럼 적용되므로 주의)
+
+left속성은 static위치가 left 수치의 위치에 있도록 설정되는 것 같음
+
+right속성은 static 위치가 right 수치의 위치에 있도록 설정되는 것 같음
+
+
+예외
+ⓐ만일 두 속성 모두 적용되었다면 맨 처음 지정한 속성만 적용되고 이후의 속성은 적용x
+
+ⓑ상속관계에 있을때 형제 태그가 존재하는 위치에 값을 설정하는 경우 적용되지 않는다.
+(아무 요소가 없는 경우만 적용)
+
+
+absolute position
+부모 태그기점으로 지정되는 좌표 설정
+
+
+fixed position
+해당 문서의 스크롤을 내려도 고정적으로 지정되는 좌표 설정
+
+sticky position
+처음에 static 위치에 있다가 스크롤을 내리거나 올리면 top(시작지점)이나 bottom(시작지점) 값으로 설정한 위치에 붙는다.
+
+
+(각 position마다 좌표 지정 기준이 다르다.)
+
+
+
+
+
+
+특정 속성
+
+clip 속성 rect
+(Top(시작)~Bottom(끝))  (Left(시작)~Right(끝)) 범위로 표현할 이미지 사이즈 지정
+
+
+z-index
+레이아웃 순서 결정(겹칠 경우)
+수치가 높으면 높을 수록 위로 올라감(스케줄링의 우선순위와 같이 보면 된다.)
+
+
+
+float 속성 (자식 요소는 부모 요소에서 위치 또한 상속 받기 가능)
+float 속성을 정의한 요소는 해당 위치에 요소가 있든 없든 비집고 들어가 공간을 차지한다.
+(원래 위치에 있던 다른 요소는 밀려난다.(해당 float 속성값에 따라 밀려나는 방향이 다르다.))
+
+예외
+그러면 float 속성을 정의했을때 겹치는 요소가 있다면?
+먼저 정의한 요소가 우선순위가 높게 잡혀 나중에 정의한 요소가 밀려남
+우선순위 
+n번째 float 정의 요소>n+1번째 float 정의 요소>기존태그 이런 방식임
+
+
+
+clear 속성(floating 권한을 없애는 속성) 
+
+의미가 있나 그냥 float 정의를 안하면 될 것을..
+
+none(default)
+both
+left
+fight
+
+
+
+Overflow 속성(content 가 범람하게 될 경우 데이터 표시 처리 관련 속성)
+
+overflow-x, overflow-y(x,y축 별로 처리 가능하다.)
+
+auto(default)
+hidden 넘치든 말든 잘린 채로 content가 표시(white-space: nowrap 상태와 유사)
+scroll 범람 시 스크롤로 오르내릴 수 있음(x,y축으로)
+
+
+마우스 커서 모양 변환(외워야 하나..)
+cursor: ~~~
+
+
+html문서 영역(2023.03.07 참고)
+
+1.header영역
+2.navigation bar 영역 nav
+3.section 영역
+4.footer 영역
+
+
+hover 커서 올릴때
+link 방문하지 않은 링크일때
+active 클릭 상태일때
+visited 방문 했던 링크일 경우
+
+끝부분이 상태 클래스일때
+조건1 조건2 조건3..
+
+끝부분이 요소일때
+상속관계(자손 선택자)
+요소(부모) 요소(자손)
+
+at(@)
+@import
+head 태그 영역 내에서 외부 파일을 적용시킬때 사용하는 어노테이션?
+@font-face
+style 태그내에서 외부 폰트 적용시킬때 사용하는 어노테이션?
+@media
+미디어 호환성?을 위한 맞춤식 미디어 스타일 시트를 제공
+@media screen/print and/or (조건)
+
+gradient
+점차 색 짙어지거나 옅어지는 것
+
+선형 선방향으로 점차 색이 짙어지거나 옅어지는 형태
+
+원형 원의 중심에서 반지름 끝 지점까지 도달하는 것처럼 색이 짙어지거나 옅어지는 형태 
+
+side(변), corner(꼭지점)
+closest 제일 가까운 곳에 원형 그라데이션이 끝나는 형태
+
+farthest 제일 먼 곳에 원형 그라데이션이 끝나는 형태
+
+
+
+vender prefix
+
+transform 속성 값
+
+scale함수
+
+translate 함수
+
+
+2D,3D
+
+transform
+
+transition
+변화수치(px),변화 시간(second)
+용어
+layout(디자인 계열)
+시각적 효과와 사용 목적을 고려하여 구성·배열하는 일. 또는, 그 기술
+prefix
+외부 서술 파일에 있는 필드의 이름을 부분적으로 변경하는 데 사용되는 키워드
