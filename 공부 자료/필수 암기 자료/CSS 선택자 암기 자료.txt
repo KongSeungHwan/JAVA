@@ -1,0 +1,47 @@
+선택자
+단일
+속성 선택자[attribute operator value]
+id
+class
+요소 선택자 tagName
+복합
+전체 선택자(*)
+그룹 선택자(,)
+
+
+결합자
+
+자식 선택자
+	자식 선택자>
+	인접 자식 선택자+(단일),~(복합)
+후손 선택자
+" "
+
+가상 클래스
+:hover
+:active
+:link
+:visited
+:focus
+
+가상 요소
+::before
+::after
+::selection
+::firstletter
+::firstline
+
+기타 의사 클래스
+:in-range
+:out-of-range
+:valid
+:invalid
+:required
+.
+.
+.
+
+
+
+
+

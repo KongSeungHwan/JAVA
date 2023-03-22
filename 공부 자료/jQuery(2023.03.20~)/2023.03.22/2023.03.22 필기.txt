@@ -1,0 +1,116 @@
+Bootstrap:웹사이트를 쉽게 만들 수 있게 도와주는 CSS, JS 프레임워크
+
+SaaS:클라우드 기반의 소프트웨어 제공 모델
+
+새로 안 태그
+detail>
+	<summary></summary>
+</detail>
+
+복습
+
+inline vs block
+
+inline은 너비만 조정 가능하고 높이 조정 불가 글고 박스모델 사이즈 조정 불가
+block내에 inline이든 block도 포함 가능 하지만 inline은 포함 불가
+
+
+u ins
+ins 새로운내용 추가 의미부여
+u 밑줄 그으며 강조
+
+id 단일
+
+class 복합
+
+메타데이터? 데이터를 설명해주는 데이터
+
+
+semantic Element
+header 
+nav
+section
+article
+footer
+
+
+absolute
+relative
+
+Unicode Encoding
+문자셋
+utf-8 대부분 이 문자열을 씀 표준형 문자셋
+EUC-KR 영어를 제외한 문자셋
+
+get 쿼리스트링
+post 쿼리스트링x
+
+Canvas vs Svg
+
+
+
+
+선택자
+
+id
+class
+요소[속성=값] ~= != ^= $=
+속성
+그룹
+전체
+가상클래스
+head 태그 내부의
+style 태그
+
+inline
+
+internal 
+
+external
+
+@import
+link 태그
+
+box model
+
+content
+
+padding
+
+border
+
+margin
+
+outline
+
+border : (top)px (right)px (bottom)px (left)px
+
+margin:auto
+
+var 둘다 가능
+let 재할당 가능
+const 재선언 재할당 불가능
+nothing
+
+scope
+변수 또는 함수의 유효범위
+
+
+=== 타입 값 모두 같을때 true 리턴
+a**b  a가 밑 부분 b가 지수 부분
+(int) (long) (unsigned int)
+
+자바랑 자바스크립트 배열은 다른 개념
+
+stack push pop Lifo
+queue shift unshift Fifo
+
+Java Script Object Notation
+통칭 JSON
+
+객체
+{프로퍼티:값 ...}
+형태로 주고 받는 형식
+
+click change blur 
+
