@@ -1,0 +1,165 @@
+코드 편집기
+다음 단어 시작 부분까지 삭제
+Ctrl-Delete
+코드 편집기
+다음 단어 시작 부분까지 삭제
+Ctrl-T
+코드 편집기
+다음 단어 시작 부분으로 이동
+Ctrl-Right
+코드 편집기
+뒤로 이동
+Left
+코드 편집기
+로컬 탭 크기를 2로 설정
+Ctrl-2
+코드 편집기
+로컬 탭 크기를 4로 설정
+Ctrl-4
+코드 편집기
+로컬 탭 크기를 8로 설정
+Ctrl-8
+코드 편집기
+매개변수 인사이트(P)
+Ctrl-Shift-Space
+코드 편집기
+삽입 모드 토글
+Insert
+코드 편집기
+새 행 삽입
+Shift-Enter
+코드 편집기
+새 행 삽입
+Enter
+코드 편집기
+선택 사항 뒤로 이동
+Shift-Left
+코드 편집기
+선택 사항 복제
+Ctrl-Shift-D
+코드 편집기
+선택 사항 아래로 이동
+Shift-Down
+코드 편집기
+선택 사항 앞으로 이동
+Shift-Right
+코드 편집기
+선택 사항 위로 이동
+Shift-Up
+코드 편집기
+선택 사항을 다음 단어 시작 부분으로 이동
+Ctrl-Shift-Right
+코드 편집기
+선택 사항을 이전 단어 시작 부분으로 이동
+Ctrl-Shift-Left
+코드 편집기
+선택 사항을 파일 끝으로 이동
+Ctrl-Shift-End
+코드 편집기
+선택 사항을 파일 시작 부분으로 이동
+Ctrl-Shift-Home
+코드 편집기
+선택 사항을 페이지 아래로 이동
+Shift-Page Down
+코드 편집기
+선택 사항을 페이지 위로 이동
+Shift-Page Up
+코드 편집기
+선택 사항을 행 끝으로 이동
+Shift-End
+코드 편집기
+선택 사항을 행 시작 부분으로 이동
+Shift-Home
+코드 편집기
+선택 해제
+Ctrl-Back Slash
+코드 편집기
+선행 공백을 탭으로 변환
+Ctrl-Shift-T
+코드 편집기
+선행 탭을 공백으로 변환
+Ctrl-Shift-U
+코드 편집기
+스마트 완성 인사이트(A)
+Ctrl-Alt-Space
+코드 편집기
+아래로 이동
+Down
+코드 편집기
+앞으로 이동
+Right
+코드 편집기
+역방향 탭
+Shift-Tab
+코드 편집기
+완성 인사이트(C)
+Ctrl-Space
+코드 편집기
+위로 이동
+Up
+코드 편집기
+이전 단어 시작 부분까지 삭제
+Ctrl-Backspace
+코드 편집기
+이전 단어 시작 부분으로 이동
+Ctrl-Left
+코드 편집기
+이전 문자 삭제
+Shift-Backspace
+코드 편집기
+이전 문자 삭제
+Backspace
+코드 편집기
+일치하는 중괄호까지 선택
+Alt-Shift-Close Bracket
+코드 편집기
+일치하는 중괄호까지 선택
+Alt-Shift-Open Bracket
+코드 편집기
+일치하는 중괄호로 이동
+Alt-Open Bracket
+코드 편집기
+일치하는 중괄호로 이동
+Alt-Close Bracket
+코드 편집기
+취소
+Escape
+코드 편집기
+탭 삽입
+Tab
+코드 편집기
+파일 끝으로 이동
+Ctrl-End
+코드 편집기
+파일 시작 부분으로 이동
+Ctrl-Home
+코드 편집기
+페이지 아래로 이동
+Page Down
+코드 편집기
+페이지 위로 이동
+Page Up
+코드 편집기
+행 끝까지 삭제
+Ctrl-Shift-Y
+코드 편집기
+행 끝으로 이동
+End
+코드 편집기
+행 시작 부분으로 이동
+Home
+코드 편집기
+행 아래로 스크롤
+Ctrl-Down
+코드 편집기
+행 위로 스크롤
+Ctrl-Up
+코드 편집기
+행 조인
+Ctrl-J
+코드 편집기
+행 주석 토글(T)
+Ctrl-Slash
+코드 편집기
+행 주석 토글(T)
+Ctrl-Shift-Slash

@@ -1,0 +1,10 @@
+라틴어 숫자 접두어
+1 Mono
+2 Bi
+3 Tri
+4 Tetra
+5. Penta
+6 Hexa
+7 Hepta
+8 Octo
+10 Deca

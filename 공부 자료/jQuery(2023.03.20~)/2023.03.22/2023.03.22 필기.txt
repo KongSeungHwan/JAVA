@@ -114,3 +114,11 @@ Java Script Object Notation
 
 click change blur 
 
+용어
+아카이브:
+ 역사적 가치 혹은 장기 보존의 가치를 지닌 기록이나 문서들의 컬렉션
+CSV:
+ 쉽표로 구분된 값(Comma Separated Values)
+
+Axios:
+ 브라우저, Node.js를 위한 Promise API를 활용하는 HTTP 비동기 통신 라이브러리

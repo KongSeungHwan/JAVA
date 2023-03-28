@@ -1,0 +1,98 @@
+SASS 멋있는 css 코드
+SCSS 효율적인? css코드
+------------------------------
+
+DataBase
+
+MariaDB
+MySQL
+Oracle
+PostgreSQL
+
+SQL
+Structure Query Language
+구조적 질의 언어
+
+DataBase데이터의 저장소
+
+DBMS(DataBase Management System) 데이터 베이스 관리 시스템
+RDBMS 관계형 데이터베이스 관리 시스템(+Relative)
+
+scott 계정
+
+
+DDL Data Definition Language
+Create  >> INSERT
+Read >>SELECT
+Update >>UPDATE
+Delete >>DELETE
+
+DDL Data Definition Language
+데이터베이스,스키마
+CREATE 생성
+ALTER 변경 
+DROP 삭제
+
+
+DML Data Manipulation Language
+SELECT 조회
+INSERT 생성
+DELETE 삭제
+UPDATE 갱신
+
+DCL Data Control Language
+GRANT 권한 부여
+REVOKE 권한 박탈
+
+TCL Transaction Control Language
+ROLLBACK 트랜잭션 하기전 시점으로 되돌리는 기능
+COMMIT 트랜잭션 수행
+
+
+정규화
+데이터 무결성을 지키기 위해 하는 작업
+
+이상 현상 3가지
+삭제이상
+삽입이상
+갱신이상
+
+
+반정규화
+사용자의 편의를 위해 정규화의 일부를 위반하는 행위
+
+CREATE
+
+create table 테이블명(
+	속성명 타입(크기),
+	....
+);
+
+create table 테이블명 as select 문
+
+
+alter table 테이블명 ⓐ
+
+ⓐ
+add (칼럼) (데이터 타입)
+drop (칼럼) (데이터 타입) -- 
+modify (칼럼) (데이터 타입) --타입 갱신
+rename (칼럼) (기존 값) to (갱신할 값) 
+
+
+drop table (테이블명);
+
+truncate table (테이블명);
+
+
+
++)
+comment on table (테이블명) is (메모할 것);
+comment on column (칼럼명) is (메모할 것);
+
+
+select * or (칼럼명) from (테이블명) where (조건) group by.... order by...
+
+
+constraint 제약 조건(create table 시 각 칼럼 뒤에 작성)
+not null/unique/primary key/foreign key/check/default

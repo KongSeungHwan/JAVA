@@ -1,0 +1,55 @@
+VScode 단축키
+변수명 사이트:
+https://www.curioustore.com/#!/
+
+! + tab
+ html 기본 형식 단축키
+
+Ctrl+Shift+p 들여쓰기 단축키
+
+Ctrl+H 일치하는 텍스트 바꾸기(replace)
+
+Ctrl + B 익스플로어 열기/닫기
+
+Ctrl +(+/-) 폰트 사이즈 조절(확대 축소)
+
+Ctrl+ (PageUp / PageDown)
+열어 놓은 파일 오가기
+
+Ctrl+P
+파일 검색(파일 빠르게 열기)
+
+Shift + Alt + F / 전체 선책후 Ctrl + K + F
+ 자동 정렬
+
+Ctrl + G
+해당 라인 이동
+
+Ctrl + 클릭
+해당 함수 추적
+
+Ctrl + Shift + R
+코드를 함수나 변수로 감싸주는 기능 (리팩토링).
+Shift + Alt + (↑, ↓) : 한줄 복사
+
+Alt + (↑, ↓) : 한줄 이동
+
+Ctrl + x : 한줄 삭제
+
+Ctrl + Shift + L : 같은단어 전체 선택
+
+Alt + Click : 멀티 커서
+
+드래그 + ( : 
+문자를 자동으로 괄호로 묶어준다.
+
+Ctrl + .(점) : 에러발생시 없는 모듈 자동으로 찾아주기 (import)
+
+Alt + Shift + a : 블록 주석 묶기
+
+
+
+폰트 이용 사이트
+font site :https://fonts.google.com/
+네이버 폰트
+등등
