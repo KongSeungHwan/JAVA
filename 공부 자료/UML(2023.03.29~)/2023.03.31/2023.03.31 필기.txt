@@ -1,0 +1,64 @@
+ERD
+Entity Relation Diagram
+개체 관계 다이어그램!
+
+ㅁ >>엔티티(테이블)
+ㅇ >> 속성
+◇ >> 관계
+
+튜플 Tuple >>엔티티 내의 행
+
+
+
+
+정규화(Normalizaion)
+데이터 무결성을 위함이며 이상현상 제거를 위한 작업
+
+삽입 삭제 갱신 이상현상!
+
+반정규화
+
+
+정규화
+C,U,D 기능 향상 효과
+
+반정규화
+R 기능 향상 효과
+
+
+고객 주문 (Customer Order)
+------------------------
+
+고객
+고객 번호 (Customer Number) 기본키
+고객 이름 (Customer Name)
+고객 전화번호 (Customer Phone Number)
+
+주문
+주문 번호 (Order Number) 기본키
+고객 번호 (Customer Number) 외래키 대체키
+제품 번호 (Product Number) 외래키 대체키
+주문 수량 (Order Quantity)
+주문 날짜 (Order Date)
+
+제품
+제품 번호 (Product Number) 기본키
+제품 이름 (Product Name)
+제품 가격 (Product Price)
+
+
+
+
+
+
+고객 주문 (Customer Order)
+------------------------
+주문 번호 (Order Number)
+고객 번호 (Customer Number)
+고객 이름 (Customer Name)
+고객 전화번호 (Customer Phone Number)
+제품 번호 (Product Number)
+제품 이름 (Product Name)
+제품 가격 (Product Price)
+주문 수량 (Order Quantity)
+주문 날짜 (Order Date)
