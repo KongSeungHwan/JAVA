@@ -1,0 +1,16 @@
+package com.study.springboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+@SpringBootApplication
+public class D02DiApplication {
+
+	public static void main(String[] args) {
+		//SpringApplication.run(D02DiApplication.class, args);
+		//1.컨테이너(IoC)
+		ApplicationContext=new AnnotationConfigApplicationContext(Config.class)
+	}
+
+}

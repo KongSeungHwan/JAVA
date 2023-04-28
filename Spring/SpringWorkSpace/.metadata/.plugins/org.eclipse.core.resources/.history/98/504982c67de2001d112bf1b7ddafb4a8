@@ -1,0 +1,20 @@
+package com.study.springboot.bean;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class DIController {
+	@Autowired
+	Member member1;
+	@Autowired
+	Printer printer;
+	@Autowired
+	Member member2;
+	
+	@RequestMapping("/")
+	public@ResponseBody String root() {
+		
+	}
+}

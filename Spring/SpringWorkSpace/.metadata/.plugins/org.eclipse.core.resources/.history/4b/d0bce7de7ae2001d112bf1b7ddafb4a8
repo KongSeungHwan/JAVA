@@ -1,0 +1,15 @@
+package com.study.springboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class P03AnnotationDiApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(P03AnnotationDiApplication.class, args);
+	}
+
+}
+//@SpringBootApplication
+//@Configuration(각종 설정)

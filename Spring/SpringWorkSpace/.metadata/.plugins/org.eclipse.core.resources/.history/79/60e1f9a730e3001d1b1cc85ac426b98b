@@ -1,0 +1,9 @@
+package com.study.springboot;
+
+@Controller
+public class LombokController {
+	@RequestMapping("/")
+	public String root() {
+		I
+	}
+}

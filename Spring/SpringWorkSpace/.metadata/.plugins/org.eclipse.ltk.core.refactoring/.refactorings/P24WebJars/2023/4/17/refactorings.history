@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy package &apos;com.study.springboot.controller&apos; to &apos;P25LocalJars/src/main/java&apos;&#x0D;&#x0A;- Original project: &apos;P24WebJars&apos;&#x0D;&#x0A;- Destination element: &apos;P25LocalJars/src/main/java&apos;&#x0D;&#x0A;- Original element: &apos;P24WebJars/src/main/java/com.study.springboot.controller&apos;" description="Copy package" destination="=P25LocalJars/src\/main\/java=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/" element1="/src\/main\/java=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/&lt;com.study.springboot.controller" flags="589830" fragments="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1682667190170" version="1.0"/>
+</session>

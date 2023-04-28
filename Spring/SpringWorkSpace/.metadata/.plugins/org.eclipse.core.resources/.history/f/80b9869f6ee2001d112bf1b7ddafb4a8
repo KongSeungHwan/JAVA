@@ -1,0 +1,13 @@
+package study;
+
+class Member{
+	String name;
+	String nickname;
+	public Member() {}
+	
+}
+public class DIStudy {
+	public static void main(String[] args) {
+		Date date = new Date();
+	}
+}

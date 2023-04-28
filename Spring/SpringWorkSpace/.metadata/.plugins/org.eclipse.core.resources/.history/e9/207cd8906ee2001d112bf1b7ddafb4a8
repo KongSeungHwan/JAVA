@@ -1,0 +1,11 @@
+package study;
+
+class Member{
+	String name;
+	String nickname;
+	public Member() {}a
+	
+}
+public class DIStudy {
+
+}

@@ -1,0 +1,6 @@
+package com.study.springboot.bean;
+
+
+public class Config {
+	//bean Spring이 IOC 제어의 역전 방식으로 관리되는 객체
+}

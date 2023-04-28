@@ -1,0 +1,11 @@
+package com.study.springboot;
+
+@Getter
+public class PersonDTO {
+	private String name;
+	private String age;
+	
+	@Contructor
+	@Getter
+	@Setter
+}

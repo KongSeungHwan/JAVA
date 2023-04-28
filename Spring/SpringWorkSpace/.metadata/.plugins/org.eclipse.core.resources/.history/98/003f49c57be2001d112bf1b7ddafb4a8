@@ -1,0 +1,48 @@
+package com.study.springboot.bean;
+
+public class Member {
+	private String name;
+	private String nickName;
+	private Printer printer;
+	
+	public Member() {}
+
+	public Member(String name, String nickName, Printer printer) {
+		@Value("나문희")
+		this.name = name;
+		@Value("호박고굼마")
+		this.nickName = nickName;
+		@Value("나문희")
+		this.printer = printer;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public Printer getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
+	}
+	public void print() {
+		System.out.println("퉤"+name+" "+nickName);
+	}
+
+	
+	
+}

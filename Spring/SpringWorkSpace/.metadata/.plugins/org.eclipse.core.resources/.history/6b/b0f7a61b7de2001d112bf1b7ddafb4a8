@@ -1,0 +1,6 @@
+package com.study.springboot.bean;
+
+@Controller
+public class DIController {
+	
+}
