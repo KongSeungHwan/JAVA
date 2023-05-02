@@ -1,0 +1,544 @@
+JSP란?
+Java Server Page
+동적 페이지를 제공하기 위해 만들어진 툴
+또는 자바 코드 이용가능한 동적 페이지
+
+Servlet
+웹 서버 내에 존재하는 작은 자바 프로그램
+
+Container
+웹페이지 기능구현을 위해 존재하는 
+소프트웨어 묶음
+
+Cookie vs Session
+쿠키와 세션은 클라이언트의 정보를 유지하는 것에
+목적은 같으나
+저장되는 위치가 다르다
+쿠키는 클라이언트 로컬 영역 내에 저장되며
+세션은 웹 서버 컴퓨터에 저장되는 정보이다.
+
+(알아도 그만 몰라도 그만..)>> Rest 원칙
+인터페이스 일관성 : 일관적인 인터페이스로 분리되어야 한다
+무상태(Stateless): 각 요청 간 클라이언트의 콘텍스트가 서버에 저장되어서는 안 된다
+캐시 처리 가능(Cacheable): WWW에서와 같이 클라이언트는 응답을 캐싱할 수 있어야 한다.
+잘 관리되는 캐싱은 클라이언트-서버 간 상호작용을 
+부분적으로 또는 완전하게 제거하여 scalability와 성능을 향상시킨다.
+계층화(Layered System): 클라이언트는 보통 대상 서버에 직접 연결되었는지,
+또는 중간 서버를 통해 연결되었는지를 알 수 없다. 
+중간 서버는 로드 밸런싱 기능이나 공유 캐시 기능을 제공함으로써 
+시스템 규모 확장성을 향상시키는 데 유용하다.
+Code on demand (optional) - 자바 애플릿이나 자바스크립트의 제공을 
+통해 서버가 클라이언트가 실행시킬 수 있는 로직을 전송하여 기능을 
+확장시킬 수 있다.
+클라이언트/서버 구조 : 아키텍처를 단순화시키고 작은 단위로 
+분리(decouple)함으로써 클라이언트-서버의 각 파트가 독립적으로 
+개선될 수 있도록 해준다..
+
+위의 REST원칙을 지키는 것을 RESTful이라고 한다.
+RESTful API >>REST 원칙을 지키는 API
+
+지시어 태그
+
+<%@ page %> 지시어 태그: 현재 JSP 페이지의 속성을 정의합니다.
+ language, contentType, pageEncoding, import 등의 속성을 설정할 수 있습니다.
+
+<%@ include %> 지시어 태그: 다른 JSP 파일을 현재 페이지에 포함시킵니다. 
+파일 경로를 지정하여 해당 파일의 내용을 현재 페이지에 포함시킵니다.
+
+<%@ taglib %> 지시어 태그: 사용자 정의 태그 라이브러리를 현재 JSP 페이지에 추가합니다. 
+uri, prefix 등의 속성을 설정하여 태그 라이브러리를 지정합니다.
+
+<%@ directive %> 지시어 태그: JSP 페이지에 대한 지시를 제공합니다. 
+주로 import나 pageEncoding과 같은 JSP 페이지에서 사용할 클래스나 인코딩 등의 정보를 지정하는데 사용됩니다.
+
+<%@ page %>
+language: JSP 페이지에서 사용할 언어를 지정합니다.
+contentType: JSP 페이지의 컨텐츠 타입을 지정합니다.
+pageEncoding: JSP 페이지의 인코딩을 지정합니다.
+import: JSP 페이지에서 사용할 클래스를 import합니다.
+session: JSP 페이지에서 session을 사용할 지 여부를 지정합니다.
+<%@ include %>
+file: 현재 JSP 페이지에 다른 JSP 페이지를 포함합니다.
+<%@ taglib %>
+uri: 태그 라이브러리 파일의 위치를 지정합니다.
+prefix: 태그 라이브러리에서 사용할 접두어를 지정합니다.
+<%@ directive %>
+name: 사용자 정의 지시어 태그 이름을 지정합니다.
+page: 지시어 태그를 사용할 JSP 페이지를 지정합니다.
+
+
+
+
+
+
+Scope(데이터의 유효범위)
+page < request < session < application
+
+page는 따로 객체가 없으며 pageContext가 역할을 대신함
+리턴 Object 객체 형변환 필요
+
+request 데이터 지정 페이지+
+ 포워딩을 할 시 전달한 페이지까지 유효한 객체(포워딩 필수)
+
+request.getParameter >>String 리턴 형변환 필요 x
+
+
+session 어플리케이션이 켜질 때부터 꺼질 때까지 유효
+리턴 Object 객체 형변환 필요
+
+application 어플리케이션이 켜질 때부터 꺼질 때까지 유효
+리턴 Object 객체 형변환 필요
+
+단 Application은 범위가 가장 넓지만 남용 금지
+클라이언트가 수정할 필요가 없는 데이터들을 지정할 시 유용함
+남용시 데이터 충돌 가능성 농후하다.
+
+
+
+템플릿 데이터
+->클라이언트로 출력되는 콘텐츠
+
+<%! %>
+선언 태그
+멤버 변수나 메소드 선언 필요하면 사용가능하나 권장x
+그닥 쓸 일 읎음
+
+<%= %>
+표현 태그
+웹 브라우저를 통해 out.println()의 인자로 적합한 모든 자바 코드가 가능하다.
+사칙연산,메소드 호출,변숫값 출력 시 사용
+
+ex)
+<% int a=5; %>
+<html>
+.
+.
+.
+<%=a %> //온전히 5만 출력된다.
+
+
+사용처 간단히 HTML 중간중간에 값 넣어줄때 사용
+
+<% %>
+HTML 중간에 섞어 사용하는 것도 가능
+JSTL+EL로 대체 가능
+모든 자바 코드 사용가능
+
+<%int a=6; %>
+
+Standard Action Tag(표준 액션 태그)
+JSP 페이지에서 자바 코드 등의 스크립트 언어를 
+사용하지 않고도(즉, HTML 태그 형태로) 
+다른 페이지의 서블릿이나 자바빈의 객체에 접근할 수 있도록 
+태그를 이용해 구현된 기능
+
+jsp:forward
+request,response 객체를 포함하여 다른페이지로 포워딩 시킴
+page: 이동할 페이지 경로
+
+일반식
+<jsp:forward page="(경로)"/>
+
+(경로)에 있는 request,response 데이터를 (경로)로 모두 넘겨준다.(포워딩)
+
+jsp:include
+다른 페이지의 실행 결과를 포함시킴 
+속성들
+page: 표기할 페이지 경로
+
+flush:버퍼에 저장하고 즉시 클라이언트에게 전송
+(처리 데이터 양이 적을 때만 사용권장)
+default >>  false
+
+일반식
+<jsp:include page="(앞 경로)/(표기할 페이지).jsp"/>
+
+(표기할 페이지).jsp 가 jsp:include 태그가 있는 부분에 붙는 것처럼 된다.
+
+
+
++)
+flush를 사용하는 이유
+버퍼는 비워져 있지 않는 것이
+일반적이다.
+이를 비워주는 역할을 하는 키워드는 
+flush이다 flush는 버퍼의 데이터를 비워주는
+역할을 하는데 이는 결국 데이터 전송이
+빠르게 이루어진다.
+하지만 이는 처리 데이터 양이 적을 경우
+한정이고
+처리할 데이터가 방대하게 많을 경우
+네트워크 부하가 증가할 우려가 있다.
+
+곧 성능과 네트워크 부하 가능성을 고려하여
+적절히 사용하는 것을 권장
+
+
+errorPage: 
+표기할 페이지에서 오류가 발생할 경우 
+띄울 페이지 경로
+default >> 웹브라우저 기본 오류페이지
+
+일반 식 flush,errorPage는 기입 안해도 작동
+<jsp:include page="(경로)"  flush="(true/false)" errorPage="(경로)"/>
+
+
+
+자바 빈즈? >>
+JSP 기반 웹 어플리케이션에서 정보를 표현하기 위한 객체
+밑의 useBean 액션태그를 사용 시 
+
+jsp:useBean
+자바 빈즈 객체를 생성 or 호출 
+
+사용가능한 속성
+
+id: 객체를 참조할 이름(비슷한 의미: 변수명)
+class: 참조할 클래스 경로
+scope: 객체를 할당할 영역(앞서 배운 4가지 scope!)
+
+ex) 
+<jsp:useBean id="person" class="common.Person scope="session" "/>
+common.Person 클래스로 만든 객체인 person을 session 영역에 할당한다는 의미 
+
+jsp:setProperty 
+자바 빈즈 객체의 속성에 값을 할당 
+
+
+사용가능한 속성
+
+name:객체명(jsp:useBean에서 지정한 id)
+property:객체의 필드 이름
+value: property에 대응되는 값
+
+
+ex)
+<jsp:setProperty name:person property="name" value="kong"/>
+
+
+
+jsp:getProperty 
+자바 빈즈 객체의 속성의 값을 호출
+
+name:객체명(jsp:useBean에서 지정한 id)
+property: 객체의 필드 이름
+
+
+ex)
+<jsp:setProperty name:person property="name" "/>
+
+
+
+jsp:param
+jsp:forward, jsp:include 태그 안에 포함 시켜 같이 쓰며 
+페이지 이동 또는 표현 시 해당 데이터를 목표 페이지(이동/표현)로
+보내주고 처리
+전달 받은 페이지에서는 
+request 객체를 통해 받을 수 있음
+
+ex)
+<jsp:forward page="publicNumber.jsp">
+	<jsp:param value="112" name="police"/>
+	<jsp:param value="119" name="fireFighter"/>
+</jsp:forward>
+
+publicNumber.jsp 로 페이지 이동이 일어나면서 police,fireFighter 파라미터도 같이 넘겨준다.
+
+<jsp:include page="publicNumber.jsp">
+	<jsp:param value="112" name="police"/>
+	<jsp:param value="119" name="fireFighter"/>
+</jsp:include>
+
+
+jsp:include 태그가 있는 페이지에 publicNumber.jsp 로 페이지 표기하면서 police,fireFighter 파라미터도 같이 넘겨준다.
+
+
+
+
+
+EL(Expression Language)
+JSP에서 자바코드를 더욱 간결하게 하기 위해 만든 언어이다.
+
+EL에 대한 내 의견:
+데이터를 전송할 페이지에서 setAttribute로 값을 할당하는 것은 필수이긴 하나...
+데이터를 받는 페이지에서는 굳이 getAttribute 호출하고 값을 할당할 필요가 없어진다는 장점을 가짐
+
+대신 외워야함.. pageScope.scopeVal, sessionScope.scopeVal 등 요런것들..
+
+
+
+--EL을 통해 가독성을 높이는 것이 목적--
+
+
+산술 연산자(+, -, *, /, %)
+관계 연산자(>, >=, <, <=, ==, !=)
+논리 연산자(and, or, not)
+Empty 연산자(empty, not empty)
+조건 연산자(? :)
+EL에서는 다음과 같은 객체에 접근할 수 있습니다.
+
+pageScope: JSP 페이지 내에서 지역적으로 선언된 변수
+requestScope: 현재 요청에 대한 정보를 담고 있는 객체
+sessionScope: 현재 세션에 대한 정보를 담고 있는 객체
+applicationScope: 현재 어플리케이션에 대한 정보를 담고 있는 객체
+param: 요청 파라미터
+paramValues: 요청 파라미터의 배열
+header: 요청 헤더
+headerValues: 요청 헤더의 배열
+cookie: 쿠키 값
+initParam: 어플리케이션 초기화 파라미터 값
+EL은 다음과 같은 문법을 사용하여 객체에 접근함.
+
+${객체명.속성명}: 객체의 속성에 접근
+${객체명["속성명"]}: 객체의 속성에 접근
+${객체명.메소드명()}: 객체의 메소드를 호출
+${객체명"메소드명"}: 객체의 메소드를 호출
+${empty 객체}: 객체가 null인지 또는 빈 값이면 true 아니라면 false
+${not empty 객체}: 객체가 null이 아니거나 빈 값이면 true 아니라면 false
+${객체 ?: 기본값}: 객체가 null인 경우 기본값을 반환
+
+
+
+JSTL (Java server pages Standard Tag Library)
+jsp에서 빈번하게 사용하는 반복문 조건문을 처리하는 동작을 모아
+표준으로 만든 태그 라이브러리
+
+종류			기능				접두어(prefix)
+core			변수 선언 조건문 반복문 url 처리	c
+formatting		숫자,날짜, 시간, 포맷 지정		fmt
+xml			xml parsing			x
+function			collection, String 처리		fn
+sql			Database 연결 및 Query 실행		sql
+
+
+Core
+
+c:set 변수 값 설정 시 사용하는 태그
+	var 변수명
+	value 값
+	scope 유효범위 default 제일 작은 유효범위
+
+
+
+c:remove 특정 영역의 변수를 지울때 사용하는 태그
+	var 지울 변수명
+	scope 유효범위 default 모든 영역
+
+
+
+c:if 
+태그 내의 var 속성 안에있는 조건식이 
+true일 경우 내부 태그,텍스트 기입 
+기능이 있는 태그
+
+	test EL로 표현한 조건식 기입 (대소문자 구분x)
+	ex) 
+	${number mod 2 eq 0} << 요런거 기입! 짝수면 true
+
+	var 조건식을 변수로 할당(boolean) 
+	이후 EL로 사용가능
+
+**유의할 점(EL이던 일반 값이던 간에 
+앞뒤로 공백이 들어가면 false 처리)
+
+	scope 유효범위
+
+
+c:choose 
+여러조건으로 나눠 처리하고 싶을 경우 
+사용하는 태그
+속성 x
+
+choose 조건부 태그들
+	c:when (자바의 if,elseif 역할과 유사)
+	c:if와 syntax 동일(속성 동일)
+
+	c:otherwise (자바의 else 역할과 유사)
+
+
+
+c:forEach 기존 반복문 기능을 하는 태그
+begin~end 
+닫힌 범위(begin<= x <=end 범위 적용)
+
+var 참조 변수 이름 기입(ver.java 초기화식에 들어가는 변수역할)
+items 반복문 수행 가능한 자료구조명 기입
+begin 반복문의 시작 인덱스 (default 0)
+end 반복문의 끝 인덱스 지정 (default 자료구조 크기-1)
+(ver.java 조건식 역할)
+step 증가량 (default 1)(ver.java 증감식 역할)
+varStatus 반복 요소의 상태 정보를 저장하는 변수의 이름
+
+
+
+c:forTokens
+
+var 분리된 요소들을 참조할 변수명
+items 구분자로 분리할 문자열명 기입(문자열 배열 가능)
+delims 구분자 기입 default ","
+varStatus 반복 요소의 상태 정보를 저장하는 변수의 이름
+
+
++)varStatus로 지정한 변수의 프로퍼티들
+	index: 현재 요소의 인덱스 값 0부터 시작하여 items의 크기보다 1 작은 값까지 증가
+	count: 현재 요소의 인덱스 값에 1을 더한 값 1부터 시작하여 items의 크기와 같아질 때까지 증가
+	first: 현재 요소가 items의 첫 번째 요소인지 여부를 나타내는 boolean 값
+	last: 현재 요소가 items의 마지막 요소인지 여부를 나타내는 boolean 값
+	even: 현재 요소의 인덱스 값이 짝수인지 여부를 나타내는 boolean 값 (index % 2 == 0)
+	odd: 현재 요소의 인덱스 값이 홀수인지 여부를 나타내는 boolean 값 (index % 2 == 1)
+	current: 현재 인덱스 값
+
+
+c:import <iframe>과 유사
+
+url 삽입할 외부 페이지 또는 자원의 url 기입
+context 삽입할 외부 자원url이 상대경로인 경우 지정
+charEncoding  삽입할 외부 자원의 문자 인코딩 기입
+var 삽입한 결과를 저장할 변수 이름을 지정
+scope var 속성과 함께 사용하여, 삽입한 결과를 저장할 변수의 범위를 지정 default page
+
+
+c:url 약간 <a>와 유사
+
+value 이동되는 url을 지정
+var url을 저장할 변수명 지정
+scope  var 속성과 함께 사용하여, 생성한 URL을 저장할 변수의 범위를 지정
+context URL 패스가 현재 애플리케이션 컨텍스트의 상대 경로인 경우, 컨텍스트 경로를 지정
+varReader  equest나 session 등의 범위에서 URL 정보를 읽어오는 Reader 객체를 지정
+encoding URL 인코딩 방식을 지정 default utf-8
+
+
+
+c:out (ver.java System.out.print 메소드와 유사)
+value 출력 값 지정
+default 출력 값이 null,빈 문자열인 경우 출력할 값 지정
+escapeXml 출력할 값에서 XML 특수 문자를 HTML 엔터티로 변환할지 여부를 지정
+charEncoding 출력할 값의 문자 인코딩을 지정
+var 출력한 결과를 저장할 변수 이름을 지정
+scope var 속성과 함께 사용하여, 출력한 결과를 저장할 변수의 범위를 지정
+
+
+
+c:catch(ver.java try~catch문과 유사)
+단, 1개의 예외만 처리 가능..
+
+var 예외 객체를 저장할 변수 이름을 지정
+scope var 속성과 함께 사용하여, 예외 객체를 저장할 변수의 범위를 지정
+type 처리할 예외의 타입을 지정
+
+
+
+
+
+
+Format
+
+fmt:formatNumber 숫자값만 기입 가능 
+숫자를 알맞은 형식으로 가공하는 기능의 태그
+
+value 형식화할 숫자 값을 지정
+type 형식화할 숫자 값의 유형을 지정
+pattern 형식화할 숫자의 패턴을 지정
+var 형식화된 값을 저장할 변수의 이름을 지정(가공 이후 값 할당)
+scope  형식화된 값을 저장할 변수의 범위를 지정
+groupingUsed 숫자 그룹 구분 기호(콤마)를 사용할지 여부를 지정
+minIntegerDigits  출력할 최소 정수 자릿수를 지정
+maxIntegerDigits  출력할 최대 정수 자릿수를 지정
+minFractionDigits  출력할 최소 소수 자릿수를 지정
+maxFractionDigits  출력할 최대 소수 자릿수를 지정
+type : 형식화할 숫자 값의 유형을 지정
+default number
+ "currency", "percent", "integer" 등의 
+값을 사용할 수 있음
+currencyCode : 통화 코드를 지정 
+이 속성은 type 속성이 "currency"인 경우에 
+사용됨
+
+currencySymbol : 통화 기호를 지정합니다. 
+이 속성은 type 속성이 "currency"인 경우에 
+사용됨.
+
+
+
+
+fmt:parseNumber
+문자열을 숫자로 형변환할 시 사용하는 태그!
+
+value : 형변환할 문자열 값을 지정
+var : 형변환된 숫자 값을 저장할 변수의 이름을 지정
+scope 형변환된 숫자 값을 저장할 변수의 범위를 지정
+integerOnly : 정수값만 형변환할지 여부를 지정
+pattern : 문자열 값의 패턴을 지정
+ex)
+pattern="###,##0.00"과 같이 패턴을 지정
+>>문자열 값이 ###,##0.00 형식으로 형변환
+
+
+parseLocale : 파싱할 문자열 값의 로케일(locale)을 지정
+default 요청한 jsp 페이지의 로케일
+	로케일?의 종류:
+		en_US : 미국 영어
+		en_GB : 영국 영어
+		en_CA : 캐나다 영어
+		fr_FR : 프랑스어
+		de_DE : 독일어
+		ja_JP : 일본어
+		ko_KR : 한국어
+		zh_CN : 중국어(중국 본토)
+		zh_TW : 중국어(대만)
+
+fmt:formatDate
+
+value  포맷팅할 Date 객체를 지정
+type value 속성에 지정된 Date 객체의 유형을 지정
+pattern Date 객체를 출력할 때 사용할 패턴 지정
+timeZone : Date 객체를 출력할 때 사용할 타임존을 지정
+	default 서버의 기본 타임존
+dateStyle : 출력할 날짜 형식을 미리 정의된 상수 값으로 지정
+	이 속성을 지정하면, pattern 속성은 무시
+	가능한 값: "default", "short", "medium", "long", "full"
+timeStyle 출력할 시간 형식을 미리 정의된 상수 값으로 지정
+	이 속성을 지정하면 pattern 속성은 무시
+	가능한 값	 "default", "short", "medium", "long", "full"
+var : 포맷팅 결과를 저장할 변수 이름을 지정
+
+xml
+
+value 출력할 EL 표현식을 지정
+escapeXml 출력할 값을 XML 형식으로 이스케이핑할지 여부를 지정 default true
+default 출력할 값이 null인 경우 대체할 값을 지정
+
+
+
+
+Servlet?
+동적 웹 페이지(결과가 프로그램 실행 후 바뀔 수 있는 웹페이지)를 만들 때 
+사용되는 자바 기반의 웹 애플리케이션 프로그래밍 기술
+(그냥 쉽게 말해서 자바 코드 묶음.. 즉 소프트웨어이자 프로그램이다.!)
+
+Servlet은 MVC(Model,View,Controller)패턴의 Controller 부분을 담당하고 있는 프로그램이다.
+
+*내가 생각하는 동작.. 원리
+
+페이지 이동시 url 뒷쪽에 아무 원하는 패턴(패턴1)을 붙이면 xml이나 annotation으로 설정한
+서블릿중 패턴1에 해당되는 서블릿으로 데이터를 처리를 하게 된다.
+
+서블릿에 도착하면 순서대로 메소드 실행
+ⓐinit() >> ⓑ데이터 전송방식에 따라 service(),doGet(),doPost() 3가지중 한가지로 처리 >> ⓒdestroy()
+
+위의 순서대로 실행되게 된다.(위의 메소드들은 오버라이딩을 해도 되고 안해도 되긴하다. 
+단,ⓑ부분에서 service,doGet,doPost 적어도 1개는 오버라이딩이 되어있어야 서블릿의 의미가 생긴다.)
+
+ⓑ부분에서 다른 페이지로 이동하게끔 처리하는 것이 이상적!(request.getRequestDispatcher(url).forward(request,response) 또는 response.sendRedirect(url)로 페이지이동)
+
+
+서블릿 실행 1회당 ⓑ부분에서 service,doGet,doPost중 한 가지만 실행되게 되며! 만일 service메소드가 오버라이딩되어있다면
+doGet,doPost는 실행을 못하게 되고 service만 실행되게 된다.
+
+
+위의 메소드를 제외하고 특이한 메소드들
+
+preDestroy PreDestroy 메서드는 서블릿 컨테이너가 서블릿 인스턴스를 파괴(destroy())하기 직전에 호출
+postConstructor는 서블릿 인스턴스가 생성되고 초기화(init()) 된 후에 호출
+
+
