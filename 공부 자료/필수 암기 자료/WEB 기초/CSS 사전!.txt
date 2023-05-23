@@ -1,0 +1,270 @@
+tag style 기본 속성
+
+
+@ at이라고 읽음
+@import
+@font-face
+@keyframes
+
+기본 	initial : default값으로 초기화
+	inherit: 부모 요소에서 적용한 속성으로 초기화
+
+절대 단위 지정자
+(cm,mm,in,pt,pc)
+
+상대 단위 지정자
+(em, ex, px)
+
+만일 단위중에 정수가 들어가게 되는 경우
+1을 100%로 보며 조정 가능
+ex) 1 100% 2 200% 3 300%
+
+width: 너비
+height: 높이
+
+min/max width height 각 요소 최대 최소값 설정px
+
+
+내부 텍스트 정렬 속성
+text-align: left, right, center
+vertical-align: top, center, bottom
+text-decoration: 텍스트에 선긋기 
+		underline,line-through,overline
+		dotted,dashed,wavy,solid
+		red,green,blue...(색상)
+text-transform: 
+		uppercase 대문자 변형
+		lowercase 소문자 변형
+		capitalize 첫 번째 대문자 변형
+line-height: font-size를 기준으로 1을 100%로 잡아서 ( ex) 1.8은 180%) 표기!
+
+text-overflow: 
+		clip 텍스트가 넘치면 잘린채로 표기
+		ellipsis 텍스트가 넘치면 ...으로 표기
+text-emphasis:글자 위에 특정 마크를 넣어 강조하는 속성
+		filled,open,double-circle 등 사용자 설정도 가능!
+		색상
+		
+text-area 전용 속성
+resize: both(둘다), vertical(세로),horizontal(가로)		
+		
+
+
+
+font 관련 속성
+font-size: 글자 크기 속성
+font-weight: 글자 굵기 속성 bold, bolder, lighter, normal, 양수
+font-family: 폰트 스타일 변경 속성
+font-style : normal, italic, oblique x deg(degree) >>x도 만큼 기울인 글씨체(왼쪽에서 오른쪽으로)-90~90도
+font-variant:ⓐ 소문자를 작은 대문자로 바꾸는 속성
+ⓐ에 들어갈 속성들
+normal : 소문자를 작은 대문자로 바꾸지 않습니다.
+small-caps : 소문자를 작은 대문자로 바꿉니다.
+white-space:
+	normal(default) 연속 공백, 줄바꿈 >> 하나의 공백으로 표기
+	nowrap 줄 바꿈 없이 표기
+	pre 연속된 공백 그대로 표기 글 수에 상관 없이 벗어나도 표기
+	pre-line 연속공백은 하나의 공백으로 표기 단, 행의 줄바꿈은 행의 박스를 메꾸기 위해 필요한 때에 실행
+	pre-wrap 연속 공백 그대로 유지하며 줄바꿈은 행의 박스를 메꾸기 위해 필요한 때에 실행
+	(가장 사실적 이며 깔끔함)
++)가상요소(::) 한정 속성
+content: 해당 요소 내부 텍스트 앞 뒤에 추가가능한 속성(before after 한정)
+
+
+direction:
+	ltr 왼쪽에서 오른쪽으로 글 나열
+	rtl 오른쪽에서 왼쪽으로 글 나열
+letter-spacing: 글자 간격 설정 속성
+	(정수)px +면 디폴트 간격에서 더 떨어뜨리기 -면 디폴트 간격에서 더 줄이기
+
+word-wrap: break-word
+word-break: break-all(모든 줄 줄바꿈 처리), keep-all
+
+word-spacing: 단어 간격 설정 속성
+	(정수)px +면 디폴트 간격에서 더 떨어뜨리기 -면 디폴트 간격에서 더 줄이기
+text-indent: (정수)px +들여쓰기(문서 내부 방향) -내어쓰기(문서 외부 방향)
+
+
+배경 관련 속성들
+background-color 배경 색
+background-image: url메서드 사용 이미지 소스 파라미터에 url 기입
+background-size: 가로세로 pixel, %,auto,  cover(비율 안맞아도 배경 끼워넣기), contain(비율맞도록 끼워넣기)
+background-clip: border-box, padding-box, content-box
+background-attachment: 
+		scroll:  요소를 기준으로 고정
+		fixed: 윈도우 전체 기준으로 고정
+		local: 내부 태그 기준으로 고정
+그라데이션 넣기
+background: 그라데이션에 사용할 색상 n개로 적용할 경우 사용하는 속성
+	linear-gradient()
+	인자 n개 색상 색상 .... 
+	인자 n+1개 방향(ex to left 오른쪽에서 왼쪽 방향(대각선도 가능)) 색상 색상
+	인자 n+1개 각도(방향),색상,색상
+	repeating-linear-gradient()
+	인자 n+1개 방향 색상,색상 m%, 색상 l%...(단 m+l은 100보다 무조건 작아야 함)
+	radial-gradient() 방향을 기본적으로 원의 중심 >> 테두리 방향
+	인자 n개 색상,색상....
+	인자 n+2개 circle/ellipse(원/타원) 방향 색상,색상 m%, 색상 l%...(단 m+l은 100보다 무조건 작아야 함)
+	적
+	closest-side/corner at(가장 가까운 모서리/꼭지점)
+	farther-side/corner at(가장 먼 모서리/꼭지점)	
+list 관련 속성들
+list-style: type,position image
+list-style-type: Ctrl+space 로 찾는 것을 추천(방대함)
+	disc(default) 검은 채워진 원
+	circle 검은 비워진 원
+	demical 1,2,3,4,...숫자 순차적으로 항목으로 지정
+ 	lower/upper-alpha 소/대문자인 영문자
+	upper-roman 로마자
+	none  표기 x
+list-style-position:
+	outside(default) 왼쪽
+	inside 항목 텍스트를 들여쓰기 적용
+list-style-position-image: 
+	url(url 문자열)
+
+
+
+display 속성
+block
+inline
+inline-block(인라인 요소처럼 동작하되(줄바꿈x) 박스모델 조정 가능)
+
+
+visibility 속성
+none 
+hidden
+visible
+collapse<table>한정 속성 값으로 선택 테이블 행 열 숨김!
+
+overflow 속성(x,y)
+	visible 내부 요소가 넘치든 말든 표기!
+	hidden 넘치는 부분만 숨김!
+	scroll 넘치는 부분을 볼 수 있도록 
+	auto x,y 둘다 자동 처리!
+	
+	
+
+
+그림자 설정
+box-shadow,text-shadow ⓐpx ⓑpx ⓒpx ⓓpx 색
+오른쪽,아래로(ⓐ,ⓑ) ⓒblur농도 ⓓ크기(pixel 단위)
+
+
+박스모델 관련 속성
+block은 모든 방향 조정 가능
+inline은 left,right만 조정 가능
+ 
+
+margin
+padding
+border
+  
+박스모델 대부분의 속성 인자의 개수 따른 적용 순서
+
+인자 1개 : 네 방향 모두 pixel단위로 조정
+인자 2개 : 가로 세로 순으로 pixel 단위로 조정
+인자 3개: top 가로 bottom 순으로 pixel단위로 조정
+인자 4개: top right bottom left순으로 pixel단위로 조정
+
+border-radius:  
+	인자 1개 : 전체 테두리 적용
+	인자 2개 : 왼대각선 방향 테두리 / 오른 방향 테두리 적용(4,8 형식도 가능!)
+
+border-image: url(url 문자열) 꼭지점 쪽에 이미지가 붙는다.(비율 맞춰서 크기조정)
+n round stretch << n 이 커질수록 감싸는 이미지 반복이 많아짐
+
+border-style : 
+dotted,groove,double,inset,outset,dashed,ridge
+
+border-color: 테두리 색상 속성
+
+border-collapse: <table>한정 속성
+셀의 테두리 사이의 간격을 어떻게 처리할 지 정함.
+	seperate 테이블 자체와 내부 요소들의 간격을 만든다.
+		조건부 border-spacing 가로, 세로 간격(px)
+	collapse 테이블 자체와 내부 요소들의 간격을 없앰
+
+table-layout: 테이블 셀 크기 조정
+	auto (default): 내부의 텍스트 크기와 개수에 따라 셀 크기 자동 조정
+	fixed : 내부의 텍스트 크기와 개수에 관계없이 고정 셀 크기 조정
+empty-cells:
+	hide 빈 셀을 숨김
+	show 빈 셀 또한 표기하도록 함
+
+
+outline-color: 색상
+outline-style: solid dotted dashed none
+outlint-width: px 단위
+
+
+box-sizing: content-box,border-box
+box기준을 어디로 잡을까 정하는 속성
+word-break: break-all(단어 중간에도 줄바꿈 가능),keep-all(문자별로 분리되는 것을 금지)
+,normal(단어 분리 디폴트 값)
+word-spacing: normal(기본 값 기본 간격),length(px단위),inherit(상속)
+transition:애니메이션 변화 속도 조정가능(s << second) ex)0.5s 1s
+기본, 상태클래스 둘 중 아무 곳이나 집어넣으면 작동
+
+
+cursor 관련 속성
+auto 자동
+default 기본
+none 커서 없어짐
+help 도움말 표기
+pointer 커서모양 손모양으로 바뀜
+progress 프로세스 기다림 표시
+wait 기다림 표시
+cell 엑셀 셀 커서 갖다대면 나오는 표시
+text 평소 브라우저에서 텍스트를 대상으로 갖다대면 바뀌는 효과 Ⅰ
+vertical-text 텍스트에 갖다댄 효과에서 90도 튼 효과
+crosshair 십자모양 커서
+alias 커서에서 북동쪽으로 화살표가 삐져나온 형태의 효과
+copy 커서 북동쪽에 +모양이 생긴 형태의 효과
+move 십자 모양이지만 화살표가 붙어있는 형태의 효과
+not-allowed 허가되지 않는 것을 표기한 형태의 효과
+grab 화면을 왼쪽클릭만으로 스크롤 해야할 경우 생기는 모양새
+grabbing grab 상태에서 좌클릭을 하였을 경우의 효과
+all-scroll move와 같은 형태
+col-resize 창을 가로방향으로 사이즈 조정할 때의 커서모양
+row-resize창을 세로방향으로 사이즈 조정할 때의 커서모양
+e-resize 
+ne-resize
+nw-resize
+nesw-resize
+se-resize
+sw-resize
+s-resize
+w-resize
+동서남북 east west south north 의 약자들을 가져와 해당 방향의 화살표 모양새(2가지면 대각)
+
+zoom-in 돋보기 모양 확대
+zoom-out 돋보기 모양 축소
+
+
+
+위치 조정 관련 속성
+
+position: 
+		static 기본 위치(default) 
+		absolute 문서 상 고정 위치
+		relative: static 위치에서 
+		fixed:브라우저 상 고정 위치
+		sticky: relative와fixed 합친 형태 
+		기존에 relative 위치에 있다가 스크롤하면 fixed로 바뀜
+
+각 요소 나열 관련 속성
+
+float: left,right,none 만 가능 <->clear: none(default),left,right(각 방향 별로float 속성 해제 속성)
+
+column
+
+grid
+
+img 특화
+	clip 속성 
+	rect(top,right,bottom,left) 박스 모델 속성 조정과 방향이 같음
+	시작 지점을 왼쪽위를 0,0으로 잡고 시작
+	
+
+2D 속성
