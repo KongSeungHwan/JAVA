@@ -9,9 +9,9 @@ import java.util.Date;
 @Data
 public class MatchWaitDTO {
     private Long matchWaitId;
-    private MemberEntity member;
-    private StadiumEntity stadium;
-    private PartyEntity party;
+    private MemberDTO member;
+    private StadiumDTO stadium;
+    private PartyDTO party;
     private Date searchStart;
     private Date searchEnd;
     private String team;

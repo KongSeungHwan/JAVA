@@ -23,6 +23,7 @@ public class MatchEntity{
     @ManyToOne
     @JoinColumn(name="STD_ID",nullable = true)
     private StadiumEntity stadium;
+    @Enumerated(EnumType.STRING)
     @Column(name="ACCEPT")
     private AcceptType accept;//모두 수락 완료하고 matchWait로 넘어감
     @Column(name="MATCH_SEARCH_STR")

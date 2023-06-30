@@ -1,15 +1,24 @@
 import React, { useState,useEffect } from 'react';
 import '../../styles/MatchingPage/Wait/waitingPage.css';
 import axiosInstance from "../axiosInstance";
-import MatchResult from "./MatchResult";
 
-const MatchWait = ({ session, party,setParty,setIsMatch }) => {
+const MatchWait = ({ session, party,setParty,setIsParty,findMatch }) => {
     const [matchStatus, setMatchStatus] = useState('');
     const [partyData, setPartyData] = useState(null);
-    const [matchAccept, setmatchAccept] = useState(false); // 추가된 부분
+    const [matchAgreeData, setMatchAgreeData]= useState(null);
+    const [matchAccept, setMatchAccept] = useState(false); // 추가된 부분
+    const [agreeVisible, setAgreeVisible] = useState(true);
     useEffect(() => {
         findPartyData();
-    });
+        findMatch();
+
+        const interval = setInterval(() => {
+            findMatch();
+            handleRenew();
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const findPartyData = () => {
         axiosInstance
@@ -24,8 +33,47 @@ const MatchWait = ({ session, party,setParty,setIsMatch }) => {
                 console.log('파티 없음 또는 서버오류');
             });
     }
+
+    const handleRenew = () => {
+        axiosInstance
+            .post("/matchGetIt/match/renewMatchList", null, { params: { id: session.userId } })
+            .then((response) => {
+                console.log('데이터 옴');
+                console.log(response.data);
+                if(response.data.length>=1){
+                    setMatchAgreeData(response.data);
+                    setMatchAccept(true);
+                }else{
+                setMatchAccept(false);
+                }
+            })
+            .catch((error) => {
+                console.log('실패');
+            });
+    };
     const handleAccept = () => {
-        setmatchAccept(true);
+            axiosInstance.post('/matchGetIt/match/matchAccept',null,{params:{id:session.userId}})
+                .then(
+                response=>{
+                    console.log(response.data);
+                    handleRenew();
+                    setAgreeVisible(false);
+                }
+            ).catch(error=>{
+
+            });
+    };
+
+    const handleReject = () => {
+            axiosInstance.post('/matchGetIt/match/matchReject',null,{params:{id:session.userId}})
+                .then(
+                    response=>{
+                        console.log(response.data);
+                        cancel();
+                        handleRenew();
+                    }
+                ).catch(error=>{
+            });
     };
 
 
@@ -69,7 +117,7 @@ const MatchWait = ({ session, party,setParty,setIsMatch }) => {
             // setMatchStatus('취소 성공');
             setMatchStatus('');
             setParty(null);
-            setIsMatch(false);
+            setIsParty(false);
         }).catch(error=>{
             setMatchStatus('취소 실패');
             setTimeout(() => {
@@ -85,8 +133,8 @@ const MatchWait = ({ session, party,setParty,setIsMatch }) => {
                         {session.name} 님 매칭 중
                     </div>)
                 :(<div className="waitTitle">
-                    {session.name} 수락완료
-                    <br/> 다른 인원 수락 대기중
+                    {session.name} 수락 요청 도착
+                    <br/> 다른 인원 수락 대기중  수락 인원 수({matchAgreeData.filter(m=>m.accept=='AGREE').length}/1{/*잡을 수 설정*/})
                 </div>)
             }
             <div className="waitAddress">{partyData?.address}</div>
@@ -100,20 +148,21 @@ const MatchWait = ({ session, party,setParty,setIsMatch }) => {
                 ))}
             </ul>
             <p>{matchStatus}</p>
-            {matchStatus || matchAccept? (
+            {!matchAccept? (
                 <button type="button" className="glassBtn" onClick={cancel}>
                     매칭 취소
                 </button>
             ) : (
+                agreeVisible && (
                 <div>
-                    {matchAccept ? <MatchResult /> : null}
-                    <button type="button" className="glassBtn" onClick={handleAccept}>
+                    <button type="button" className="glassBtn"  onClick={handleAccept}/*수락 메소드 기입*/>
                         수락
                     </button>
-                    <button type="button" className="glassBtn" onClick={cancel}>
+                    <button type="button" className="glassBtn" onClick={handleReject}/*거절 메소드 기입*/>
                         거절
                     </button>
                 </div>
+                )
             )}
         </div>
     );

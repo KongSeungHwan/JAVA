@@ -2,21 +2,11 @@ package com.matchgetit.backend.service;
 
 import com.matchgetit.backend.constant.AcceptType;
 import com.matchgetit.backend.constant.GameType;
-import com.matchgetit.backend.constant.PayState;
-import com.matchgetit.backend.constant.Proficiency;
 import com.matchgetit.backend.dto.MatchDTO;
 import com.matchgetit.backend.dto.MemberDTO;
-import com.matchgetit.backend.dto.StadiumDTO;
-import com.matchgetit.backend.entity.MatchEntity;
-import com.matchgetit.backend.entity.MemberEntity;
-import com.matchgetit.backend.entity.PartyEntity;
-import com.matchgetit.backend.entity.StadiumEntity;
-import com.matchgetit.backend.repository.MatchRepository;
-import com.matchgetit.backend.repository.MemberRepository;
-import com.matchgetit.backend.repository.PartyRepository;
-import com.matchgetit.backend.repository.StadiumRepository;
+import com.matchgetit.backend.entity.*;
+import com.matchgetit.backend.repository.*;
 import com.matchgetit.backend.util.FormatDate;
-import com.matchgetit.backend.util.MatchConverter;
 import com.matchgetit.backend.util.NearStadium;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -37,6 +27,7 @@ public class MatchService{
     private final StadiumRepository stadiumRepository;
     private final MatchRepository matchRepository;
     private final PartyRepository partyRepository;
+    private final MatchWaitRepository matchWaitRepository;
     @Scheduled(fixedDelay=5*1000)
     public void match() {
         List<MatchEntity> entityList = matchRepository.findAllByOrderByCycleDesc();
@@ -59,12 +50,12 @@ public class MatchService{
                         for (Map.Entry<Long, List<MatchDTO>> foMatchEntry : foMatchMap.entrySet()) {
                             List<MatchDTO> filteredByPersons =foMatchEntry.getValue();
                             if(tMatchEntry.getKey().equals(GameType.FRIENDLY)){
-                                System.out.println("친선 :"+(matchPersons(filteredByPersons)?"12명 매칭 성공":"인원 없음"));
+                                System.out.println("친선 :"+(matchPersons(filteredByPersons)?"12명 매칭 성공":"거절되거나 인원 없음"));
                             }else if(tMatchEntry.getKey().equals(GameType.LEAGUE)) {
-                                Map<Long,List<MatchDTO>> filterdByRating = filteredByPersons.stream().collect(Collectors.groupingBy(m->m.getParty().getPartyRatingAvg()/100L));
-                                for(Map.Entry<Long,List<MatchDTO>> fifEntry:filterdByRating.entrySet()){
+                                Map<Long,List<MatchDTO>> filteredByRating = filteredByPersons.stream().collect(Collectors.groupingBy(m->m.getParty().getPartyRatingAvg()/100L));
+                                for(Map.Entry<Long,List<MatchDTO>> fifEntry:filteredByRating.entrySet()){
                                     List<MatchDTO> filteredRatingList = fifEntry.getValue();
-                                    System.out.println("리그 :"+(matchPersons(filteredRatingList)?"12명 매칭 성공":"인원 없음"));
+                                    System.out.println("리그 :"+(matchPersons(filteredRatingList)?"12명 매칭 성공":"거절되거나 인원 없음"));
                                 }
                             }else{
                                 System.out.println("올바르지 않은 게임 타입이 발견되었습니다 DB에서 엔티티 제거 요망:"+tMatchEntry.getKey());
@@ -72,21 +63,24 @@ public class MatchService{
                         }
                     }
                 }
-            }//엔트리로 나눠서 나머지 연산
+            }//엔트리로 나눠서 나머지 연산(한꺼번에 스트링으로 묶어서 나눠서 연산하는 게 나을까 아니면.. 나눠서 루프 횟수 추가하는 게 나을까..)
         }
 
     private boolean matchPersons(List<MatchDTO> filteredByPersons){
-            if(filteredByPersons.size()>=12){
-                List<MatchDTO> scatteredList = filteredByPersons.stream().limit(12).toList();
+                filteredByPersons.forEach( m-> System.out.println( m.getParty().getGameType().equals(GameType.FRIENDLY)?"친선":"리그"+" "+"들어온 회원:"+m.getMember().getName()));
+                System.out.println(filteredByPersons.size());
+            if(filteredByPersons.size()>=1){
+                List<MatchDTO> scatteredList = filteredByPersons.stream().limit(1).toList();
                 //같은 부류로 나눈 다음 12명 처리
-                Long agreementFlag = scatteredList.stream().filter(m->m.getAccept().equals(AcceptType.AGREE)).count();
-                Long disagreementFlag = scatteredList.stream().filter(m->m.getAccept().equals(AcceptType.DISAGREE)).count();
-                if(agreementFlag==12){
+                scatteredList.stream().filter(m->m.getAccept().equals(AcceptType.WAIT)).forEach(e->updateAccept(e.getMember().getUserId(),AcceptType.MATCHING));
+                long agreementFlag = scatteredList.stream().filter(m->m.getAccept().equals(AcceptType.AGREE)).count();
+                long disagreementFlag = scatteredList.stream().filter(m->m.getAccept().equals(AcceptType.DISAGREE)).count();
+                if(agreementFlag==scatteredList.size()){
                     //매치 >> 매치웨이트 처리
-                    for( int i=0; i<scatteredList.size();i++)MatchConverter.convert(modelMapper.map(scatteredList.get(i),MatchEntity.class),i<6?"A":"B");
+                    for( int i=0; i<scatteredList.size();i++)convert(modelMapper.map(scatteredList.get(i),MatchEntity.class),i<scatteredList.size()/2?"A":"B");
                     return true;
-                }else if(disagreementFlag>1){
-                    scatteredList.stream().forEach(m->updateAccept(m.getMember().getUserId(),AcceptType.WAIT));
+                }else if(disagreementFlag>=1){
+                    scatteredList.forEach(m->updateAccept(m.getMember().getUserId(),AcceptType.WAIT));
                     return false;
                 }
             }
@@ -129,16 +123,26 @@ public class MatchService{
         match.setAccept(accept);
         matchRepository.save(match);
     }
-    public List<MatchDTO> getMatchList(Long userId){
-        //날짜 시간 장소
+    public List<MatchDTO> getMatchList(Long userId) {
         MemberEntity member = memberRepository.findByUserId(userId);
-        PartyEntity party = member.getParty();
         MatchEntity match = matchRepository.findByMember(member);
+        if (match == null) {
+            return null; // 매치가 없는 경우 null 반환 또는 빈 리스트로 변경할 수 있습니다.
+        }
         StadiumEntity stadium = match.getStadium();
-        List<MatchEntity> agreeEntityList = matchRepository.
-                findByStadiumAndParty_ApplicationTimeAndParty_ApplicationDateAndParty_Count(stadium,party.getApplicationTime(),party.getPartyApplicationDate(),party.getCount());
-        List<MatchDTO> agreeList = agreeEntityList.stream().map(m->modelMapper.map(m,MatchDTO.class)).toList();
-        return agreeList;
+        PartyEntity party = match.getParty();
+
+        System.out.println(party.getApplicationDate());
+        System.out.println(stadium.getStdName());
+        System.out.println(party.getApplicationTime());
+
+        List<MatchEntity> agreeEntityList = matchRepository.findByStadiumAndParty_ApplicationTimeAndParty_ApplicationDate(
+                stadium, party.getApplicationTime(), party.getApplicationDate());
+           List<MatchDTO> matchList = agreeEntityList.stream()
+                .map(m -> modelMapper.map(m, MatchDTO.class))
+                .toList();
+
+        return matchList.size()>=1?matchList:null;
     }
     @Transactional
     public void deleteMatch(Long partyId){
@@ -148,5 +152,24 @@ public class MatchService{
         }
         matchRepository.deleteMatchEntitiesByParty(party);
         System.out.println("삭제 성공");
+    }
+    public void updateAccept(MemberDTO member, AcceptType accept){
+        MatchEntity match = matchRepository.findByMember(modelMapper.map(member,MemberEntity.class));
+        match.setAccept(accept);
+        matchRepository.save(match);
+    }
+    public void convert(MatchEntity matchEntity, String team) {
+        MatchWaitEntity matchWaitEntity = new MatchWaitEntity();
+        matchWaitEntity.setMember(matchEntity.getMember());
+        matchWaitEntity.setStadium(matchEntity.getStadium());
+        matchWaitEntity.setParty(matchEntity.getParty());
+        matchWaitEntity.setSearchStart(matchEntity.getSearchStart());
+        matchWaitEntity.setSearchEnd(matchEntity.getSearchEnd());
+        matchWaitEntity.setCrd(matchEntity.getCrd());
+        matchWaitEntity.setPoint(matchEntity.getPoint());
+        matchWaitEntity.setCycle(matchEntity.getCycle());
+        matchWaitEntity.setTeam(team);
+        matchRepository.delete(matchEntity);
+        matchWaitRepository.save(matchWaitEntity);
     }
 }

@@ -17,6 +17,6 @@ public interface MatchRepository extends JpaRepository<MatchEntity,Long> {
 
     MatchEntity findByMember(MemberEntity member);
 
-    List<MatchEntity> findByStadiumAndParty_ApplicationTimeAndParty_ApplicationDateAndParty_Count(
-            StadiumEntity stadium, String applicationTime, Date applicationDate,Long count);
+    List<MatchEntity> findByStadiumAndParty_ApplicationTimeAndParty_ApplicationDate(
+            StadiumEntity stadium, String applicationTime, Date applicationDate);
 }

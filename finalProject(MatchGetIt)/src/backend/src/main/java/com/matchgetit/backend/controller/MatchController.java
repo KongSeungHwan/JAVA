@@ -1,8 +1,10 @@
 package com.matchgetit.backend.controller;
+import com.matchgetit.backend.constant.AcceptType;
 import com.matchgetit.backend.constant.GameType;
+import com.matchgetit.backend.dto.MatchDTO;
+import com.matchgetit.backend.dto.MatchWaitDTO;
 import com.matchgetit.backend.dto.MemberDTO;
 import com.matchgetit.backend.dto.PartyDTO;
-import com.matchgetit.backend.entity.PartyEntity;
 import com.matchgetit.backend.request.MatchRequest;
 import com.matchgetit.backend.request.MemberIdRequest;
 import com.matchgetit.backend.service.*;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/matchGetIt/match")
@@ -22,6 +25,7 @@ public class MatchController {
     private final PartyService partyService;
     private final PartyAcceptService partyAcceptService;
     private final MatchService matchService;
+    private final MatchWaitService matchWaitService;
 
     @PostMapping("/start")
     public ResponseEntity<String> startMatching( @RequestBody MatchRequest requestData) {
@@ -116,6 +120,48 @@ public class MatchController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @PostMapping("/renewMatchList")
+    public ResponseEntity<List<MatchDTO>> getMatchList(@RequestParam String id){
+        try{
+            System.out.println("갱신 요청 회원:"+Long.parseLong(id));
+            List<MatchDTO> matchAgreeList=matchService.getMatchList(Long.parseLong(id));
+            return new ResponseEntity<>(Objects.requireNonNullElseGet(matchAgreeList, ArrayList::new), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    //주석 처리한 수락 거절 요청 메소드 여기다가 만들어줘
+    @PostMapping("/matchAccept")
+    public ResponseEntity<String> acceptMatch(@RequestParam String id) {
+        try {
+            MemberDTO member = memberService.findMemberById(Long.parseLong(id));
+            matchService.updateAccept(member, AcceptType.AGREE);
+
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/matchReject")
+    public ResponseEntity<String> rejectMatch(@RequestParam String id) {
+        try {
+            MemberDTO member = memberService.findMemberById(Long.parseLong(id));
+            matchService.updateAccept(member, AcceptType.DISAGREE);
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
     @PostMapping("/cancel")
     public ResponseEntity<String> cancelMatch(@RequestParam String id) {
         try {
@@ -128,7 +174,41 @@ public class MatchController {
             e.printStackTrace();
             return new ResponseEntity<>("취소 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-}
+    }//실시간 매치 모드 종료 메소드 로직(파티 해산)
+
+
+
+
+
+    
+    @PostMapping("/cancelMatchWait")
+    public ResponseEntity<String> cancelMatchWait(@RequestParam String id) {
+        try {
+            MemberDTO member= memberService.findMemberById(Long.parseLong(id));
+            Long partyId = member.getParty().getPartyId();
+            MatchWaitDTO matchWait = matchWaitService.findMatchWaitByMemberId(Long.parseLong(id));
+            matchWaitService.deleteMatchWait(matchWait);
+            partyService.deleteParty(partyId);
+            return new ResponseEntity<>("취소 성공", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("취소 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    } //수락이 된 상태로 매칭 결과 페이지에서 취소 누르는 로직(속한 파티 해산+나머지 파티 다시 match테이블로 가게 함)
+    @PostMapping("/getMatchWaitList")
+    public ResponseEntity<List<MatchWaitDTO>> getMatchWaitList(@RequestParam String id){
+
+        MatchWaitDTO matchWait = matchWaitService.findMatchWaitByMemberId(Long.parseLong(id));
+        if(matchWait!=null){
+            List<MatchWaitDTO> matchWaitList=matchWaitService.findMatchListByMemberId(Long.parseLong(id));
+            matchWaitList.forEach(m-> System.out.println("매치 웨이트한 회원: >>>>>>>>>>"+m.getMember().getName()));
+            return new ResponseEntity<>(matchWaitList,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(new ArrayList<>(),HttpStatus.OK);
+        }
+
+
+        }
+    }//매칭 결과에 있는 리스트 반환 메소드
 
 

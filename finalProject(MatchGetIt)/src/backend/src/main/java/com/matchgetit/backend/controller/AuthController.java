@@ -5,9 +5,8 @@ import com.matchgetit.backend.dto.MemberDTO;
 import com.matchgetit.backend.request.SignUpRequest;
 import com.matchgetit.backend.service.MemberService;
 import com.matchgetit.backend.service.StadiumService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import com.matchgetit.backend.request.LoginRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -17,6 +16,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/matchGetIt/auth")
@@ -36,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request, BindingResult bindingResult) {
         try {
             if (bindingResult.hasErrors()) {
                 // 유효성 검사 오류가 있는 경우 처리
@@ -53,7 +54,8 @@ public class AuthController {
             if(member!=null){
                 String token = jwtTokenProvider.generateToken(member.getEmail());
                 System.out.println("토큰>>>>>>>ㄴ"+token);
-                session.setAttribute("jwtToken",token);
+                HttpSession session = request.getSession();
+                session.setAttribute("token",token);
                 session.setAttribute("member",member);
                 return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
             }else{
@@ -65,8 +67,10 @@ public class AuthController {
         }
     }
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpSession session) {
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
         session.removeAttribute("member");
+        session.removeAttribute("token");
         return ResponseEntity.ok("로그아웃되었습니다.");
     }
     @PostMapping("/signUp")
@@ -96,7 +100,8 @@ public class AuthController {
         }
     }
     @PostMapping("/session")
-    public ResponseEntity<MemberDTO> getUserProfile(HttpSession session) {
+    public ResponseEntity<MemberDTO> getUserProfile(HttpServletRequest request) {
+        HttpSession session = request.getSession();
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         if (member != null) {
             return ResponseEntity.ok(member);
@@ -105,31 +110,25 @@ public class AuthController {
         }
     }
     @PostMapping("/token")
-    public ResponseEntity<String> getUserToken(HttpSession session) {
-        try{
-
+    public String getUserToken(HttpServletRequest request) {
+        HttpSession session = request.getSession();
         MemberDTO member = (MemberDTO) session.getAttribute("member");
         MemberDTO auth;
-        if(member.getAccountType().equals(AccountType.NORMAL)){
-             auth = memberService.login(
-                    member.getEmail(),
-                    member.getPw()
-            );//한번 더 확인
-        }else if(!(member.getAccountType().equals(AccountType.NORMAL))){
-             auth =memberService.findMemberByEmail(member.getEmail());
-        }else{
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-        if (auth != null) {
+        if(member!=null){
+                auth =memberService.findMemberByEmail(member.getEmail());
+                if(Objects.equals(member.getUserId(), auth.getUserId())){
+                    if(!Objects.equals(member.getPw(), auth.getPw())){
+                        throw new RuntimeException("계정정보 틀림");
+                    }
+                }
+
+
             String token = jwtTokenProvider.generateToken(member.getEmail());
             session.setAttribute("token",token);
             System.out.println("인증 성공! 토큰 발급>>>>"+token);
-            return ResponseEntity.ok(token);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-        }catch(Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return token;
+        }else{
+            return null;
         }
     }
     @PostMapping("/vaildateEmail")

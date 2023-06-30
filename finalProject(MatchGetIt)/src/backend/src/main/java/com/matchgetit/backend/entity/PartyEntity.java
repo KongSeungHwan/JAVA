@@ -3,13 +3,9 @@ package com.matchgetit.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.matchgetit.backend.constant.GameType;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +26,7 @@ public class PartyEntity {
     private Long count;
 
     @Column(name = "APPLICATION_DATE")
+    @Temporal(TemporalType.DATE)
     private Date applicationDate;//사용자 선택 날짜
 
     @Column(name = "APPLICATION_TIME")

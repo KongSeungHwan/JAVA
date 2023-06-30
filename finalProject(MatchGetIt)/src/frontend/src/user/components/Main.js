@@ -13,6 +13,7 @@ import MenuBar from "./MenuBar";
 import Rank from '../components/Rank/RankingBoard';
 import PartyAccept from "./Party/PartyAccept";
 import Chatbot from "../components/chatbot/chatbot";
+import MatchResult from "./Match/MatchResult";
 
 function Main({ onLogin, onLogout, isLoggedIn }) {
     const [isLoginSlide, setIsLoginSlide] = useState(true);
@@ -21,21 +22,23 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
     const [partyAcceptData, setPartyAcceptData] = useState(null);
     const [isPartyMenuOpen, setIsPartyMenuOpen] = useState(false); // 추가된 부분
     const [party,setParty] = useState(null);
-    const [isMatch,setIsMatch]=useState(false);
+    const [isParty,setIsParty]=useState(false);
+    const [isMatch , setIsMatch] = useState(false);//matchWait에 있는지 없는지 판단하는 상태값
+    const [matchWaitData, setMatchWaitData]= useState(null);
     const errorTimerRef = useRef(null);
     const swiperRef = useRef(null);
     const [token, setToken]= useState('');
 
     useEffect(() => {
-        // const videoElement = document.createElement('video');
-        // videoElement.src = process.env.PUBLIC_URL + '/background/soccerBackground.mp4';
-        // videoElement.loop = true;
-        // videoElement.muted = true;
-        // videoElement.autoplay = true;
-        // videoElement.style.objectFit = 'cover';
-        //
-        // const container = document.querySelector('.swiper-container');
-        // container.appendChild(videoElement); 영상 돌리기
+        const videoElement = document.createElement('video');
+        videoElement.src = process.env.PUBLIC_URL + '/background/soccerBackground.mp4';
+        videoElement.loop = true;
+        videoElement.muted = true;
+        videoElement.autoplay = true;
+        videoElement.style.objectFit = 'cover';
+
+        const container = document.querySelector('.swiper-container');
+        container.appendChild(videoElement);
 
         const initSwiper = () => {
             swiperRef.current = new Swiper('.swiper-container', {
@@ -61,6 +64,7 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
         if (isLoggedIn) {
             renewPartyAcceptData();
             findPartyMembers();
+            findMatch();
         } else {
             setIsLoginSlide(false);
             if(isLoginSlide){
@@ -85,8 +89,9 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
             .then((response) => {
                 if(response.data.length!=0){
                 setParty(response.data);
+                console.log("파티 있음");
                 console.log(response.data);
-                setIsMatch(true);
+                setIsParty(true);
                 }
             })
             .catch((error) => {
@@ -94,12 +99,28 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
                 setParty(false);
             });
     }
+    const findMatch = () =>{
+        axiosInstance.post("/matchGetIt/match/getMatchWaitList",null,{params: {id:session.userId}})
+            .then(res=>{
+                console.log('데이터 웨이트 옴');
+                if(res!=null&&res.data.length>=1){
+                setIsMatch(true);
+                setMatchWaitData(res.data);
+                console.log(res.data);
+                }else{
+                    console.log('없음');
+                }
+            }).catch(error=>{
+                console.log('오류!');
+        })
+    }
 
     const renewPartyAcceptData = () =>{
         if(session.userId!=null){
             axiosInstance.post("/matchGetIt/partyAccept/renewInviteData",null,{params: {id:session.userId}})
             .then((response)=>{
-                console.log(response.data);
+                /*console.log("파티 초대 있음");
+                console.log(response.data);*/
                 setPartyAcceptData(response.data);
             }).catch((error) => {
                 console.log('파티 초대 없음');
@@ -110,6 +131,8 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
     const getSession = () => {
         axiosInstance.post('/matchGetIt/auth/session',null,{params:{token:token}})
             .then(response => {
+                console.log(response.data);
+                console.log(response.data);
                 if (response.data!=null) {
                     onLogin();
                     setIsLoginSlide(false);
@@ -125,6 +148,7 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
             .then(response => {
                 if (response.data!=null) {
                     setToken(response.data);
+                    sessionStorage.setItem("JwtToken",response.data);
                 } else {
                 }
             })
@@ -160,7 +184,7 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
         axiosInstance
             .post('/matchGetIt/auth/logout')
             .then(() => {
-                sessionStorage.removeItem('X-XSRF-TOKEN');
+                sessionStorage.removeItem('JwtToken');
                 onLogout();
                 setIsLoginSlide(true);
                 if (swiperRef.current) {
@@ -170,7 +194,6 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
                 window.location.reload();
             })
             .catch((error) => {
-                // handle error
                 onLogout();
             });
     };
@@ -226,8 +249,12 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
                             <div className="swiper-slide">
                                 <div className="slideContainer">
                                     <div className="slide-page">
-                                        {isMatch ?(
-                                            <MatchWait session={session} party={party} setParty={setParty} setIsMatch={setIsMatch}/>
+                                        {isParty ?(
+                                                isMatch?(
+                                                        <MatchResult session={session} matchWaitData={matchWaitData} setIsMatch={setIsMatch}  setMatchWaitData={setMatchWaitData}/>
+                                                        ):(
+                                                        <MatchWait session={session} party={party} setParty={setParty} setIsParty={setIsParty} findMatch={findMatch}/>
+                                                        )
                                             ):
                                             (<MatchApplication session={session} />)}
                                     </div>

@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
@@ -22,6 +21,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests()
                 .requestMatchers("/matchGetIt/auth/**").permitAll()
+                .requestMatchers("/matchGetIt/auth/session").permitAll()
+                .requestMatchers("/matchGetIt/auth/token").permitAll()
                 .requestMatchers("/matchGetIt/naver/**").permitAll()
                 .requestMatchers("/css/**").permitAll()//예외 페이지 구성
                 .anyRequest().access("@securityConfig.hasValidToken(request)");
@@ -31,10 +32,16 @@ public class SecurityConfig {
     public boolean hasValidToken(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String token = (String) session.getAttribute("token");
-        if (token == null) {
+        String headerToken = request.getHeader("Authorization");
+        if(headerToken!=null){
+        headerToken = headerToken.substring(7);
+            return jwtTokenProvider.validateToken(headerToken);
+        }
+        if (token != null) {
+            System.out.println(jwtTokenProvider.validateToken(token));
+            return jwtTokenProvider.validateToken(token);
+        }else{
             return false;
         }
-        System.out.println(jwtTokenProvider.validateToken(token));
-        return jwtTokenProvider.validateToken(token);
     }//jwt 토큰 인증을 마쳐야 true가 뜨고 접근 가능함!
 }

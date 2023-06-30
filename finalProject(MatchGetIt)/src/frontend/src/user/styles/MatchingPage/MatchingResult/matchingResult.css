@@ -1,0 +1,26 @@
+.resultContainer{
+    font-size:65%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.matchTeamMember{
+    font-size:50%;
+    width:20%;
+    white-space: nowrap;
+    text-align: center;
+}
+.teamView{
+    display: flex;
+}
+.uniform{
+    text-align: center;
+}
+.uniformImg{
+    width:40%;
+    height:40%;
+}
+.button{
+    width: 50%;
+}

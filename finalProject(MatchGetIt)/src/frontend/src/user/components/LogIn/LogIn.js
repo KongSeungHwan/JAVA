@@ -42,18 +42,6 @@ const LogIn = ({ onLogin }) => {
     onLogin(email, password);
   };
 
-  useEffect(() => {
-    const storedToken = sessionStorage.getItem('csrfToken');
-    if (storedToken) {
-      // 이미 토큰이 존재할 경우 초기화하지 않음
-      return;
-    }
-
-    // 토큰이 없으면 초기화
-    const token = 'your_token_value'; // 적절한 토큰 값을 설정해주세요
-    sessionStorage.setItem('csrfToken', token);
-  }, []);
-
   return (
       <div className="LogInContainer">
         <p className="title">풋살 예약을 간편하게</p>

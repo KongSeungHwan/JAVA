@@ -1,30 +1,10 @@
-import React, { useState,useEffect } from 'react';
+import React from 'react';
 import '../../styles/MatchingPage/Wait/waitingPage.css';
+import '../../styles/MatchingPage/MatchingResult/matchingResult.css';
 import axiosInstance from "../axiosInstance";
 
-const MatchResult = ({ session, party,team,setParty,setIsMatch }) => {
-    const [partyData, setPartyData] = useState(null);
-    useEffect(() => {
-        findPartyData();
-    });
-
-    const findPartyData = () => {
-        axiosInstance
-            .post('/matchGetIt/match/getParty', null, { params: { id: session.userId } })
-            .then((response) => {
-                if (response.data.length !== 0) {
-                    console.log(response.data);
-                    setPartyData(response.data);
-                }
-            })
-            .catch((error) => {
-                console.log('파티 없음 또는 서버오류');
-            });
-    }
-
-
-
-    if (party === null) {
+const MatchResult = ({ session, matchWaitData, setIsMatch, setMatchWaitData, party }) => {
+    if (matchWaitData === null) {
         return (
             <>잘못된 접근입니다.</>
         );
@@ -32,7 +12,7 @@ const MatchResult = ({ session, party,team,setParty,setIsMatch }) => {
 
     // applicationTime에 따라 한글로 표현
     let applicationTimeText = '';
-    switch (party?.applicationTime) {
+    switch (matchWaitData[0].party?.applicationTime) {
         case 'A':
             applicationTimeText = '오전 10시 ~ 오후 12시';
             break;
@@ -56,41 +36,51 @@ const MatchResult = ({ session, party,team,setParty,setIsMatch }) => {
             break;
     }
 
+    const cancelMatch = () => {
+        axiosInstance.post("/matchGetIt/match/cancelMatchWait", null, { params: { id: session.userId } })
+            .then(response => {
+                console.log('취소 성공');
+            }).catch(error => {
+            console.log('취소 실패');
+        });
+    };
+
+    const renderTeamMembers = (team) => {
+        const members = matchWaitData.filter(m => m.team===team);
+        return members.map((item, index) => (
+            <li key={index}>
+                <div className="matchTeamMember">{item.member.name},계급:{item.member.prfcn}</div>
+            </li>
+        ));
+    };
+
     return (
         <div className="resultContainer">
-            <div className="resultStatiumimg">Statium img link</div>
+            <div className="resultStatiumimg">
+                {/*<img src={matchWaitData.stadium.stdImgUrl} alt="Stadium" />*/}
+            </div>
             <div className="resultTime">{applicationTimeText}</div>
-            <div className="resultStadium">매칭구장 : 구장이름</div>
+            <div className="resultStadium">매칭구장: {matchWaitData[0].stadium.stdName}</div>
             <div className="lineUp">LINE_UP</div>
-            <div className="aTeam">
-                <div className="uniform"><img src="public/images/uniformA.png" alt="Ateam"/></div>
-                <div className="resultMember">
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
+            <div className="teamView">
+                <div className="aTeam">
+                    <div className="uniform">
+                        <img className="uniformImg uniformImgA" src="/images/uniformA.png" alt="Ateam" />
+                    </div>
+                    <div className="resultMember">
+                        <ul>{renderTeamMembers("A")}</ul>
+                    </div>
+                </div>
+                <div className="bTeam">
+                    <div className="uniform">
+                        <img className="uniformImg uniformImgB" src="/images/uniformB.png" alt="Bteam" />
+                    </div>
+                    <div className="resultMember">
+                        <ul>{renderTeamMembers("B")}</ul>
+                    </div>
                 </div>
             </div>
-            <div className="bTeam">
-                <div className="uniform"><img src="public/images/uniformB.png" alt="Bteam"/></div>
-                <div className="resultMember">
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                    <div>memberName, Class</div>
-                </div>
-            </div>
-            <ul>
-                {party.map((item, index) => (
-                    <li key={index}>
-                        <div className="TeamMember">{item.name}</div>
-                    </li>
-                ))}
-            </ul>
+            <button type="button" className="button" onClick={cancelMatch}>경기 취소</button>
         </div>
     );
 };
