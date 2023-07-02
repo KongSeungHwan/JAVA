@@ -115,4 +115,10 @@ public class MemberService {
         member.setParty(null);
         memberRepository.save(member);
     }
+
+    public void updateCredit(Long userId, int value) {
+        MemberEntity member = memberRepository.findByUserId(userId);
+        member.setOwnedCrd(member.getOwnedCrd()!=null?member.getOwnedCrd():0+value);
+        memberRepository.save(member);
+    }//결제 시 사용하는 메소드
 }

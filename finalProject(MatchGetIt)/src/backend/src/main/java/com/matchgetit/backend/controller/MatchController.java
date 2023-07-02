@@ -46,11 +46,13 @@ public class MatchController {
             System.out.println("시간: " + selectedTime);
             Long partyLeaderId = Long.parseLong(partyLeaderIdRequest);
             System.out.println("partyLeaderId :"+ partyLeaderId);
-
-                //매칭 1,2,3,6 명이어야지 신청가능
+            if(6%(party.size()+1)!=0){
+                throw new IllegalArgumentException("1,2,3,6명으로만 신청가능");
+            }
                 //포인트가 충분한가?(보류: 결제 시스템 미구현)
-                //MatchWait 테이블에 이미 있는 요청인가?
-                // party.size()가 파티원 수 matchService의 getMatchList로 판단
+            if(matchWaitService.validMatch(x,y,FormatDate.parseDate(selectedDate),selectedTime)){
+                throw new IllegalArgumentException("신청한 위치나 시간을 변경해주십시오!(이미 잡혀있음)");
+            }
 
             //가능 시간인가 판별하는 로직
             partyService.createParty(partyLeaderId,address,x,y, FormatDate.parseDate(selectedDate),selectedTime,gameType);
@@ -188,7 +190,6 @@ public class MatchController {
             Long partyId = member.getParty().getPartyId();
             MatchWaitDTO matchWait = matchWaitService.findMatchWaitByMemberId(Long.parseLong(id));
             matchWaitService.deleteMatchWait(matchWait);
-            partyService.deleteParty(partyId);
             return new ResponseEntity<>("취소 성공", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

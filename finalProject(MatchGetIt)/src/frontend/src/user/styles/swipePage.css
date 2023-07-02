@@ -27,23 +27,6 @@
   height: auto;
 }
 
-
-/* background-image: repeating-linear-gradient(135deg, #2b3284 0px, #2b3284 100px, #4177bc 100px, #4177bc 105px, #2b3284 105px, #2b3284 130px, #4177bc 130px, #4177bc 260px, #ffffff 260px, #ffffff 265px, #4177bc 265px, #4177bc 270px, #ffffff 270px, #ffffff 330px);
-background-size: 300% 300%;
-animation: slideBackground 10s linear infinite; */
-/* @keyframes slideBackground {
-  0% {
-    transform: translate(-50%, -50%);
-  }
-  50%{
-    transform: translate(0%, 0%);
-  }
-  100% {
-    transform: translate(-50%, -50%);
-  }
-} */
-/*여러색상 줄줄이 넘어가는 효과*/
-
 .swiper-wrapper {
   height:89%;
 }

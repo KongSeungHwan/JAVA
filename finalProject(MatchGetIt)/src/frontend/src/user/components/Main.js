@@ -207,6 +207,9 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
     const handlePartyMenuToggle = () => {
         setIsPartyMenuOpen(!isPartyMenuOpen);
     };
+    const pay1000 = () =>{
+        window.location.href='http://localhost:8081/matchGetIt/pay/payStart/1000';
+    }
 
     return (
         <>
@@ -214,7 +217,7 @@ function Main({ onLogin, onLogout, isLoggedIn }) {
                 {isLoggedIn ? (
                     <>
                         <span>{session.userId} : {session.name}</span>
-                        <span><button className="popUpBtn" onClick={handlePartyMenuToggle}>파티 메뉴</button></span>
+                        <span><button className="popUpBtn" onClick={/*handlePartyMenuToggle*/pay1000}>파티 메뉴</button></span>
                         <span>
 
                     <button type="button" className="logInOutBtn" onClick={handleLogout}>

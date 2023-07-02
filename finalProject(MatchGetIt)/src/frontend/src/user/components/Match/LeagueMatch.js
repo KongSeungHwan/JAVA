@@ -8,6 +8,7 @@ import AddressSearch from "./AddressSearch";
 const LeagueMatch = ({ session }) => {
   const [party, setParty] = useState([]);
   const [searchStatus, setSearchStatus] = useState('');
+  const [submitStatus, setSubmitStatus] = useState('');
   const [addressVisible, setAddressVisible] = useState(false);
   const [id, setId] = useState('');
   const [address, setAddress] = useState('');
@@ -95,28 +96,32 @@ const LeagueMatch = ({ session }) => {
             .post('/matchGetIt/match/start', requestData)
             .then((response) => {
               window.location.reload();
-              setSearchStatus('성공');
+              setSubmitStatus('성공');
               setTimeout(() => {
-                setSearchStatus('');
+                setSubmitStatus('');
               }, 3000);
               console.log('성공');
             })
             .catch((error) => {
-              setSearchStatus('실패');
+              if (error.response && error.response.status === 400) {
+                setSubmitStatus(error.response.data);
+              } else {
+                setSubmitStatus('매칭 실패');
+              }
               setTimeout(() => {
-                setSearchStatus('');
+                setSubmitStatus('');
               }, 3000);
             });
       }else{
-        setSearchStatus('입력하지 않은 정보가 존재(재확인)');
+        setSubmitStatus('입력하지 않은 정보가 존재(재확인)');
         setTimeout(() => {
-          setSearchStatus('');
+          setSubmitStatus('');
         }, 3000);
       }
     }else{
-      setSearchStatus('수락하지 않은 파티원이 있습니다');
+      setSubmitStatus('수락하지 않은 파티원이 있습니다');
       setTimeout(() => {
-        setSearchStatus('');
+        setSubmitStatus('');
       }, 3000);
     }
   };
@@ -211,6 +216,7 @@ const LeagueMatch = ({ session }) => {
             <button className="mBtn lButton pointBtn" type="button">
               {session.name}님 잔여 포인트 : {session.ownedPoint}
             </button>
+            <span className="systemMessage">{submitStatus}</span>
             <button className="mBtn lButton mSubBtn" type="button" onClick={submitMatch}>
               매칭
             </button>

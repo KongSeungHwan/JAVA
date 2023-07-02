@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import '../../styles/MatchingPage/Wait/waitingPage.css';
 import axiosInstance from "../axiosInstance";
+import '../../styles/CommonFactor/grade.css';
 
 const MatchWait = ({ session, party,setParty,setIsParty,findMatch }) => {
     const [matchStatus, setMatchStatus] = useState('');
@@ -85,7 +86,7 @@ const MatchWait = ({ session, party,setParty,setIsParty,findMatch }) => {
 
     // applicationTime에 따라 한글로 표현
     let applicationTimeText = '';
-    switch (party?.applicationTime) {
+    switch (partyData?.applicationTime) {
         case 'A':
             applicationTimeText = '오전 10시 ~ 오후 12시';
             break;
@@ -125,45 +126,95 @@ const MatchWait = ({ session, party,setParty,setIsParty,findMatch }) => {
             }, 3000);
         });
     }
+    const renderMembers = () => {
+        return party.map((item, index) => {
+            let iconUrl = '';
+
+            switch (item.prfcn) {
+                case 'BEGINNER':
+                    iconUrl = process.env.PUBLIC_URL + '/images/beginner.png';
+                    break;
+                case 'MIDDLE':
+                    iconUrl = process.env.PUBLIC_URL + '/images/middle.png';
+                    break;
+                case 'ADVANCED':
+                    iconUrl = process.env.PUBLIC_URL + '/images/advanced.png';
+                    break;
+                case 'PROFESSIONAL':
+                    iconUrl = process.env.PUBLIC_URL + '/images/professional.png';
+                    break;
+                default:
+                    break;
+            }
+
+            return (
+                <div key={index} className={`grade`}>
+                    <img src={iconUrl} alt={item.prfcn} className={`icon ${item.prfcn}`} />
+                    <div className={`matchTeamMember gradeMember ${item.prfcn}`}>
+                        <div className="gradeName">{item.name}</div>
+                    </div>
+                </div>
+            );
+        });
+    };
 
     return (
-        <div className="waitContainer">
-            {!matchAccept ? (
-                    <div className="waitTitle">
-                        {session.name} 님 매칭 중
+        <div className={`waitContainer ${partyData?.gameType}`}>
+            <div className="waitBlock">
+                {!matchAccept ? (
+                        <div className="waitTitle">
+                            ⚽{session.name} 님 매칭 중💨
+                        </div>)
+                    :(<div className="waitStopTitle">
+                        {session.name} 수락 요청 도착
+                        <br/> 다른 인원 수락 대기중  수락 인원 수({matchAgreeData.filter(m=>m.accept=='AGREE').length}/{matchAgreeData.length}{/*잡을 수 설정*/})
                     </div>)
-                :(<div className="waitTitle">
-                    {session.name} 수락 요청 도착
-                    <br/> 다른 인원 수락 대기중  수락 인원 수({matchAgreeData.filter(m=>m.accept=='AGREE').length}/1{/*잡을 수 설정*/})
-                </div>)
-            }
-            <div className="waitAddress">{partyData?.address}</div>
-            <div className="waitTime">{applicationTimeText}</div>
-            <div className="Team">Team</div>
-            <ul>
-                {party.map((item, index) => (
-                    <li key={index}>
-                        <div className="TeamMember">{item.name}</div>
-                    </li>
-                ))}
-            </ul>
-            <p>{matchStatus}</p>
-            {!matchAccept? (
-                <button type="button" className="glassBtn" onClick={cancel}>
-                    매칭 취소
-                </button>
-            ) : (
-                agreeVisible && (
-                <div>
-                    <button type="button" className="glassBtn"  onClick={handleAccept}/*수락 메소드 기입*/>
-                        수락
-                    </button>
-                    <button type="button" className="glassBtn" onClick={handleReject}/*거절 메소드 기입*/>
-                        거절
-                    </button>
+                }
+                <div className="waitingData">
+                    <div className="waitAddress">{partyData?.address}</div>
+                    <div className="waitTime">{applicationTimeText}</div>
                 </div>
-                )
-            )}
+                <div className="TeamTitle">👥 Team </div>
+                {renderMembers()}
+                <p>{matchStatus}</p>
+                {!matchAccept? (
+                        <div className="loading">
+                            <div id="load">
+                                <div>G</div>
+                                <div>N</div>
+                                <div>I</div>
+                                <div>D</div>
+                                <div>A</div>
+                                <div>O</div>
+                                <div>L</div>
+                            </div>
+                            <button type="button" className="button loadCancel" onClick={cancel}>
+                                매칭 취소
+                            </button>
+                        </div>
+                ) : (
+                    agreeVisible ? (
+                    <div>
+                        <button type="button" className="button" onClick={handleAccept}/*수락 메소드 기입*/>
+                            수락
+                        </button>
+                        <button type="button" className="button" onClick={handleReject}/*거절 메소드 기입*/>
+                            거절
+                        </button>
+                    </div>
+                    ):(
+                        <div id="load">
+                            <div>G</div>
+                            <div>N</div>
+                            <div>I</div>
+                            <div>D</div>
+                            <div>A</div>
+                            <div>O</div>
+                            <div>L</div>
+                        </div>
+                    )
+                )}
+            </div>
         </div>
     );
 };

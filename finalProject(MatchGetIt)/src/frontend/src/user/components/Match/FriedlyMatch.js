@@ -7,6 +7,7 @@ import AddressSearch from "./AddressSearch";
 function FriendlyMatch({ session }) {
     const [party, setParty] = useState([]);
     const [searchStatus, setSearchStatus] = useState('');
+    const [submitStatus, setSubmitStatus] = useState('');
     const [addressVisible, setAddressVisible] = useState(false);
     const [id, setId] = useState('');
     const [address, setAddress] = useState('');
@@ -42,7 +43,7 @@ function FriendlyMatch({ session }) {
                     setSearchStatus('존재하지 않는 계정입니다.');
                 } else {
                     setParty([...party, response.data]);
-                    setSearchStatus('파티 초대 성공(수락 필요)');
+                    setSearchStatus('파티 초대 성공(수락 필요(2분 유지))');
                 }
                 setTimeout(() => {
                     setSearchStatus('');
@@ -93,28 +94,32 @@ function FriendlyMatch({ session }) {
             .post('/matchGetIt/match/start', requestData)
             .then((response) => {
                     window.location.reload();
-                    setSearchStatus('성공');
+                setSubmitStatus('성공');
                 setTimeout(() => {
-                    setSearchStatus('');
+                    setSubmitStatus('');
                 }, 3000);
                 console.log('성공');
             })
             .catch((error) => {
-                setSearchStatus('실패');
+                if (error.response && error.response.status === 400) {
+                    setSubmitStatus(error.response.data);
+                } else {
+                    setSubmitStatus('매칭 실패');
+                }
                 setTimeout(() => {
-                    setSearchStatus('');
+                    setSubmitStatus('');
                 }, 3000);
             });
         }else{
-            setSearchStatus('입력하지 않은 정보가 존재(재확인)');
+            setSubmitStatus('입력하지 않은 정보가 존재(재확인)');
             setTimeout(() => {
-                setSearchStatus('');
+                setSubmitStatus('');
             }, 3000);
         }
         }else{
-            setSearchStatus('수락하지 않은 파티원이 있습니다');
+            setSubmitStatus('수락하지 않은 파티원이 있습니다');
             setTimeout(() => {
-                setSearchStatus('');
+                setSubmitStatus('');
             }, 3000);
         }
     };
@@ -128,6 +133,12 @@ function FriendlyMatch({ session }) {
 
     const deleteId = (index) => {
         const updatedParty = [...party];
+        axiosInstance.post("/matchGetIt/partyAccept/deleteInvite",null,{params:{partyLeaderId:session.userId,userId:party[index].user.userId}})
+            .then(response=>{
+                console.log(party[index].user.name+' 제외 완료');
+            }).catch(error=>{
+                console.log('서버 오류 다시시도해');
+        })
         updatedParty.splice(index, 1);
         setParty(updatedParty);
 
@@ -189,8 +200,9 @@ function FriendlyMatch({ session }) {
                     <div className="partyList">
                         {party.map((member, index) => (
                             <div key={index}>
-                                <div className="Pname">{member.name}</div>
-                                <div className="Pname">{member.agreement === 'AGREE' ? (
+                                <div className="agreement">
+                                    <div className="partyMemberName">{member.user.name}</div>
+                                    {member.agreement === 'AGREE' ? (
                                     <div style={{ color: 'green' }}>수락</div>
                                 ) : member.agreement === 'DISAGREE' ? (
                                     <div style={{ color: 'red' }}>거절</div>
@@ -216,6 +228,7 @@ function FriendlyMatch({ session }) {
                 <button className="mBtn fButton pointBtn" type="button">
                     {session.name}님 잔여 포인트 : {session.ownedPoint}
                 </button>
+                <span className="systemMessage">{submitStatus}</span>
                 <button className="mBtn fButton mSubBtn" type="button" onClick={submitMatch}>
                     매칭
                 </button>

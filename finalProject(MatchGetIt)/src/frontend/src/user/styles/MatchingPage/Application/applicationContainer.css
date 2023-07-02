@@ -142,9 +142,14 @@ background: transparent;
   align-items: center;
   flex-direction: row;
 }
-.Pname{
+.partyMemberName{
+  font-size: 30%;
+  color:white;
+}
+.agreement{
   font-size: 50px;
   display:inline-block;
+  text-align: center;
 }
 .systemMessage{
   font-size: 16px;

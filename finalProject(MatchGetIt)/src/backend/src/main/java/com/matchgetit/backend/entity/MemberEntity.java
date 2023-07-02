@@ -16,7 +16,7 @@ public class MemberEntity {
     @Column(name = "USER_ID")
     private Long userId;
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "PARTY_ID", nullable=true)
     private PartyEntity party;
     @Column(name = "BANK_ID")
@@ -91,5 +91,6 @@ public class MemberEntity {
             prfcn = Proficiency.PROFESSIONAL;
         }
     }
+
 }
 

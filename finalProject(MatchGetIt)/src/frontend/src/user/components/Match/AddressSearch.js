@@ -20,8 +20,6 @@ const AddressSearch = ({ onSelect, visible, setVisible}) => {
         }
 
         setVisible(false);
-
-        // Here is the part where we call the Kakao Map API
         axios.get(`https://dapi.kakao.com/v2/local/search/address.json`, {
             params: {
                 query: fullAddress
